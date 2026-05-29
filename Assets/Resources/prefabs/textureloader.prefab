@@ -1,0 +1,229 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1709254077376921
+GameObject:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Component:
+  - component: {fileID: 4730242686860875}
+  - component: {fileID: 114724804207875695}
+  m_Layer: 0
+  m_Name: textureloader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4730242686860875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!114 &114724804207875695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baab3926426b22fb7215847592cf827f, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  materials:
+  - material: {fileID: 2100000, guid: cb8b94abf5c53cb4f9a2f3dfc9d620a9, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: dd3990fd66711e24fb64105190cceb85, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas2
+  - material: {fileID: 2100000, guid: dc3bbfbb40d1d0949b79d14e119d7696, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas2
+  - material: {fileID: 2100000, guid: 245131343bdd1ea45939ea173fa3c9ea, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas2
+  - material: {fileID: 2100000, guid: 93945171cc2a87d48ac8a5964e112861, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: 50afff3d717004845a9096b398a3e1c8, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: d2c8deb8e8b4aa04881b5b0f2c9aa530, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: d6c7cb070324b4548bd592b01abfdeae, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: 75d1627e6093d3740a8301287f40794f, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: MenuAtlas
+  - material: {fileID: 2100000, guid: c29585aa4f9d35a4fb1f73e32bdfda0b, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: ThroneroomAtlas
+  - material: {fileID: 2100000, guid: 11af7e2089023634ab1be9b2242503c8, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: TransitionAtlas
+  - material: {fileID: 2100000, guid: 69b912b2c8f7a3f49b19eed4d64775af, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: 5f1fd438b7c57a6459773924e47581e3, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: d7f227618816eb04c95c188bd94a36d6, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas2
+  - material: {fileID: 2100000, guid: c9f5a12e8a5de23419fc97e415416442, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: MenuAtlas
+  - material: {fileID: 2100000, guid: d2c8deb8e8b4aa04881b5b0f2c9aa530, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: e34feabb37c3b5f4ba1f7b229aacbe2d, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: IngameAtlas
+  - material: {fileID: 2100000, guid: 02a9907a26746a94e89327b0a0733b68, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Cave_Sheet_01
+  - material: {fileID: 2100000, guid: cac8058f2323858418119c19f68f8d2a, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Morning_Sheet_01
+  - material: {fileID: 2100000, guid: 8393e9bc37536034db125ba6ac447cd1, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Morning_Sheet_02
+  - material: {fileID: 2100000, guid: b4729831b12288445a2f3d549293fcbb, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Morning_Sheet_02
+  - material: {fileID: 2100000, guid: ca314179e677d434fbd3b7c73f594080, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Morning_Sheet_02
+  - material: {fileID: 2100000, guid: 402c72e9a89625e4fb76e6cc3b815042, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Morning_Sky_Texture
+  - material: {fileID: 2100000, guid: a13709eb3838d264fb4bb4858f06fcca, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Jungle_Sheet_01
+  - material: {fileID: 2100000, guid: c19728f0324efb046afd222a9ca36b2a, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Jungle_Sheet_02
+  - material: {fileID: 2100000, guid: ea56b00ae91eba74c8a5d4602c958bd7, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Jungle_Sky_Texture
+  - material: {fileID: 2100000, guid: a518e299419e15546b015fe5ccfce87a, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Cave_Sheet_01
+  - material: {fileID: 2100000, guid: 6a0755095f8ce8143b8b292230e68e12, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Cave_Sheet_01
+  - material: {fileID: 2100000, guid: 7f822e6b24609ec4292ba11c60d34072, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Maya_Sheet_03
+  - material: {fileID: 2100000, guid: 62bda5908d6cd8b429fe7b606c86da1e, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Maya_Sheet_04
+  - material: {fileID: 2100000, guid: e9408c06d9716ad45b9e8c54a57e0590, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Maya_Sheet_01
+  - material: {fileID: 2100000, guid: bedc8be1483dcc6408b6a6758ea8f0d9, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Maya_Sheet_02
+  - material: {fileID: 2100000, guid: 42fafe7f4b40eb841ac457f8f305b3fb, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Maya_Sheet_01
+  - material: {fileID: 2100000, guid: cee705654b6f377428c98c5c16137a46, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Maya_Backgrounds_sky
+  - material: {fileID: 2100000, guid: 51072cfddec05e847a82b78628661b90, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Plateaus_Sheet_01
+  - material: {fileID: 2100000, guid: 2989621e65f7d7b459121f796e9eb204, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Plateau_Sky_Texture
+  - material: {fileID: 2100000, guid: 1fb637541b0f7db46b0aa45f9aa8a307, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Cave_Sheet_01
+  - material: {fileID: 2100000, guid: 976c5d468b4f4ef4788a810a34aed713, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Halloween_Sheet_01
+  - material: {fileID: 2100000, guid: bdd1936e67033fc4197604d526016053, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Halloween_Sky_Texture
+  - material: {fileID: 2100000, guid: df48a8185c6c55349a9132520b9992f9, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Jungle_Sheet_01
+  - material: {fileID: 2100000, guid: 255403eb980a45c4fb6c0382fd643961, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Jungle_Sky_Texture
+  - material: {fileID: 2100000, guid: 3eb2c627b74460f4cb3d36e5c783fdce, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Night_Sheet_01
+  - material: {fileID: 2100000, guid: ebd569be0b2c623479b18f1cb373ad21, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Night_Sky_Texture
+  - material: {fileID: 2100000, guid: 0b61d2fcf0cc9e14e8b6a88fd14798f7, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Background_Plateaus_Sheet_01
+  - material: {fileID: 2100000, guid: 899f5c91845426c478960cf791435447, type: 2}
+    bundleData:
+      assetBundle: Texture_Collection
+      assetName: Plateau_Sky_Texture
+  bundleToUnload:
+    assetBundle: Texture_Collection

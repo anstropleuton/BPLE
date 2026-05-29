@@ -1,0 +1,347 @@
+{
+	"data": [
+		{
+			"id": "AppInterface_AppName",
+			"text": {
+				"en-US": "BP",
+				"zh-Hans": "新创"
+			}
+		},
+		{
+			"id": "AppInterface_Name",
+			"text": {
+				"en-US": "App Interface",
+				"zh-Hans": "应用界面"
+			}
+		},
+		{
+			"id": "AppInterface_Settings",
+			"text": {
+				"en-US": "Settings",
+				"zh-Hans": "设置界面"
+			}
+		},
+		{
+			"id": "AppInterface_CommandSystem",
+			"text": {
+				"en-US": "Command System",
+				"zh-Hans": "指令系统"
+			}
+		},
+		{
+			"id": "AppInterface_DataPanel",
+			"text": {
+				"en-US": "Data Panel",
+				"zh-Hans": "数据界面"
+			}
+		},
+		{
+			"id": "UserSettings_Save",
+			"text": {
+				"en-US": "Save",
+				"zh-Hans": "保存"
+			}
+		},
+		{
+			"id": "UserSettings_Reset",
+			"text": {
+				"en-US": "Reset",
+				"zh-Hans": "重置"
+			}
+		},
+		{
+			"id": "ButtonSettings_Name",
+			"text": {
+				"en-US": "Button Settings",
+				"zh-Hans": "按键系统设置"
+			}
+		},
+		{
+			"id": "ButtonSettings_Enabled",
+			"text": {
+				"en-US": "Enabled",
+				"zh-Hans": "启动新型按键"
+			}
+		},
+		{
+			"id": "ButtonSettings_ButtonScale",
+			"text": {
+				"en-US": "Button Scale",
+				"zh-Hans": "按键大小比例"
+			}
+		},
+		{
+			"id": "ButtonSettings_ScrollViewHeightScale",
+			"text": {
+				"en-US": "Scroll View Height Scale",
+				"zh-Hans": "滑动高度比例"
+			}
+		},
+		{
+			"id": "ButtonSettings_MaxSeparationCount",
+			"text": {
+				"en-US": "Max Separation Count",
+				"zh-Hans": "最大载具分离数"
+			}
+		},
+		{
+			"id": "ButtonSettings_DisplayButtonIndex",
+			"text": {
+				"en-US": "Display Button Index",
+				"zh-Hans": "显示部件索引标记"
+			}
+		},
+		{
+			"id": "PhysicsSettings_Name",
+			"text": {
+				"en-US": "Physics Settings",
+				"zh-Hans": "物理设置"
+			}
+		},
+		{
+			"id": "PhysicsSettings_GravityX",
+			"text": {
+				"en-US": "Gravity (X-Axis)",
+				"zh-Hans": "重力（X轴）"
+			}
+		},
+		{
+			"id": "PhysicsSettings_GravityY",
+			"text": {
+				"en-US": "Gravity (Y-Axis)",
+				"zh-Hans": "重力（Y轴）"
+			}
+		},
+		{
+			"id": "PhysicsSettings_NoDrag",
+			"text": {
+				"en-US": "No Drag",
+				"zh-Hans": "无阻力"
+			}
+		},
+		{
+			"id": "PhysicsSettings_TimeScale",
+			"text": {
+				"en-US": "Time Scale",
+				"zh-Hans": "时间倍速"
+			}
+		},
+		{
+			"id": "ContraptionDataSettings_Name",
+			"text": {
+				"en-US": "Contraption Data Settings",
+				"zh-Hans": "载具存档设置"
+			}
+		},
+		{
+			"id": "ContraptionDataSettings_Enabled",
+			"text": {
+				"en-US": "Enabled",
+				"zh-Hans": "启用新型载具存档"
+			}
+		},
+		{
+			"id": "ContraptionDataSettings_LoadFormat",
+			"text": {
+				"en-US": "Load Format",
+				"zh-Hans": "加载格式"
+			}
+		},
+		{
+			"id": "ContraptionDataSettings_SaveFormat",
+			"text": {
+				"en-US": "Save Format",
+				"zh-Hans": "保存格式"
+			}
+		},
+		{
+			"id": "ContraptionDataSettings_BackupData",
+			"text": {
+				"en-US": "Backup Data",
+				"zh-Hans": "备份存档数据"
+			}
+		},
+		{
+			"id": "ContraptionDataSettings_BackupOriginalData",
+			"text": {
+				"en-US": "Backup Original Data",
+				"zh-Hans": "备份旧版存档数据"
+			}
+		},
+		{
+			"id": "ContraptionDataSettings_SaveAsOriginalData",
+			"text": {
+				"en-US": "Save As Original Data",
+				"zh-Hans": "保存为旧版存档"
+			}
+		},
+		{
+			"id": "DataPanel_TimeData",
+			"text": {
+				"en-US": "Time Data",
+				"zh-Hans": "时间数据"
+			}
+		},
+		{
+			"id": "DataPanel_Time",
+			"text": {
+				"en-US": "Time",
+				"zh-Hans": "时间"
+			}
+		},
+		{
+			"id": "DataPanel_RunningTime",
+			"text": {
+				"en-US": "Running Time",
+				"zh-Hans": "运行时间"
+			}
+		},
+		{
+			"id": "DataPanel_PerformanceData",
+			"text": {
+				"en-US": "Performance Data",
+				"zh-Hans": "性能数据"
+			}
+		},
+		{
+			"id": "DataPanel_FPS",
+			"text": {
+				"en-US": "FPS",
+				"zh-Hans": "帧率"
+			}
+		},
+		{
+			"id": "DataPanel_FixedFPS",
+			"text": {
+				"en-US": "Fixed FPS",
+				"zh-Hans": "固定帧率"
+			}
+		},
+		{
+			"id": "DataPanel_AllocatedManagedHeapSize",
+			"text": {
+				"en-US": "Allocated Managed Heap Size",
+				"zh-Hans": "已分配托管内存"
+			}
+		},
+		{
+			"id": "DataPanel_ReservedManagedHeapSize",
+			"text": {
+				"en-US": "Reserved Managed Heap Size",
+				"zh-Hans": "预留托管内存"
+			}
+		},
+		{
+			"id": "DataPanel_TotalAllocatedMemorySize",
+			"text": {
+				"en-US": "Total Allocated Memory Size",
+				"zh-Hans": "已分配总内存"
+			}
+		},
+		{
+			"id": "DataPanel_TotalReservedMemorySize",
+			"text": {
+				"en-US": "Total Reserved Memory Size",
+				"zh-Hans": "预留总内存"
+			}
+		},
+		{
+			"id": "DataPanel_DeviceData",
+			"text": {
+				"en-US": "Device Data",
+				"zh-Hans": "设备数据"
+			}
+		},
+		{
+			"id": "DataPanel_DeviceModel",
+			"text": {
+				"en-US": "Device Model",
+				"zh-Hans": "设备型号"
+			}
+		},
+		{
+			"id": "DataPanel_DeviceName",
+			"text": {
+				"en-US": "Device Name",
+				"zh-Hans": "设备名称"
+			}
+		},
+		{
+			"id": "DataPanel_DeviceType",
+			"text": {
+				"en-US": "Device Type",
+				"zh-Hans": "设备类型"
+			}
+		},
+		{
+			"id": "DataPanel_OperatingSystem",
+			"text": {
+				"en-US": "Operating System",
+				"zh-Hans": "操作系统"
+			}
+		},
+		{
+			"id": "DataPanel_ProcessorType",
+			"text": {
+				"en-US": "Processor Type",
+				"zh-Hans": "处理器类型"
+			}
+		},
+		{
+			"id": "DataPanel_ProcessorFrequency",
+			"text": {
+				"en-US": "Processor Frequency",
+				"zh-Hans": "处理器频率"
+			}
+		},
+		{
+			"id": "DataPanel_ProcessorCount",
+			"text": {
+				"en-US": "Processor Count",
+				"zh-Hans": "逻辑处理器数量"
+			}
+		},
+		{
+			"id": "DataPanel_GraphicsDeviceName",
+			"text": {
+				"en-US": "Graphics Device Name",
+				"zh-Hans": "图形设备名称"
+			}
+		},
+		{
+			"id": "DataPanel_GraphicsDeviceType",
+			"text": {
+				"en-US": "Graphics Device Type",
+				"zh-Hans": "图形设备类型"
+			}
+		},
+		{
+			"id": "DataPanel_GraphicsMemorySize",
+			"text": {
+				"en-US": "Graphics Memory Size",
+				"zh-Hans": "图形设备内存"
+			}
+		},
+		{
+			"id": "DataPanel_SystemMemorySize",
+			"text": {
+				"en-US": "System Memory Size",
+				"zh-Hans": "系统内存大小"
+			}
+		},
+		{
+			"id": "DataPanel_BatteryLevel",
+			"text": {
+				"en-US": "Battery Level",
+				"zh-Hans": "设备电池电量"
+			}
+		},
+		{
+			"id": "DataPanel_BatteryStatus",
+			"text": {
+				"en-US": "Battery Status",
+				"zh-Hans": "设备电池状态"
+			}
+		}
+	]
+}
