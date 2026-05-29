@@ -9,6 +9,13 @@ This repository contains a decompiled source code of BPLE by Miuna.
 - [ChatGPT](https://chatgpt.com) for manual shader reverse engineering.
 - [Rovio](https://www.rovio.com) for creating the base game Bad Piggies.
 
+## How To Build
+
+- Install [Unity 2021.3.45f2](https://unity.com/releases/editor/whats-new/2021.3.45f2)
+- Clone this repository `git clone --depth=1 https://github.com/anstropleuton/BPLE.git`
+- Open the project from Unity
+- Enjoy :)))
+
 ## Legal Notice
 
 This project is NOT affiliated with Rovio in any way. This decompilation and BPLE exists to extend the base game Bad Piggies and to keep it alive. We are releasing the decompilation source code of BPLE publicly in hopes of keeping the Bad Piggies community alive.
