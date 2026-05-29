@@ -16,6 +16,10 @@ This repository contains a decompiled source code of BPLE by Miuna.
 - Open the project from Unity
 - Enjoy :)))
 
+## Open Source?
+
+This is NOT "open source" in any traditional sense. No authors involved has granted rights to copy, modify or distribute. Use at your own risk.
+
 ## Legal Notice
 
 This project is NOT affiliated with Rovio in any way. This decompilation and BPLE exists to extend the base game Bad Piggies and to keep it alive. We are releasing the decompilation source code of BPLE publicly in hopes of keeping the Bad Piggies community alive.
