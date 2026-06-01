@@ -403,7 +403,18 @@ public class ObjectDeserializer
 		PropertyInfo property = obj.GetType().GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 		if (property != null)
 		{
-			property.SetValue(obj, value, null);
+			MethodInfo setter = property.GetSetMethod(true);
+
+			if (setter != null)
+			{
+				setter.Invoke(obj, new object[] { value });
+			}
+			else
+			{
+				Debug.LogWarning(
+					$"No setter: {obj.GetType().FullName}.{name}"
+				);
+			}
 			return;
 		}
 		if (obj is Behaviour && name == "m_Enabled")
