@@ -6,6 +6,7 @@ This repository contains a decompiled source code of BPLE by Miuna.
 
 - [Miuna](https://github.com/miu-na) for all the prior modding effort on Bad Piggies.
 - [AssetRipper](https://github.com/AssetRipper/AssetRipper) for Unity project decompilation.
+- [RenderDoc](https://renderdoc.org) for raw shader decompilation.
 - [ChatGPT](https://chatgpt.com) for manual shader reverse engineering.
 - [Rovio](https://www.rovio.com) for creating the base game Bad Piggies.
 
