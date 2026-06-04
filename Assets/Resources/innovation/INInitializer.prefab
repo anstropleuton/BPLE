@@ -2,11 +2,11 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &1709254077376921
 GameObject:
-  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4730242686860875}
   - component: {fileID: 114724804207875695}
@@ -42,12 +42,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8460f1fd08c4d28bd13770e53573ecd, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_splashes:
-  - {fileID: 1709254077376921, guid: 69be52a1eb6f4d649a61ea23040c7e74, type: 2}
+  - {fileID: 1709254077376921, guid: 69be52a1eb6f4d649a61ea23040c7e74, type: 3}
   m_prefabs:
-  - {fileID: 1709254077376921, guid: a305137a315d2394c8eb8a389a4ec051, type: 2}
-  - {fileID: 1709254077376921, guid: c7b46e7b2dea7af4f9df50e65a6be277, type: 2}
-  - {fileID: 1709254077376921, guid: b8635a83a251af442816e5dc34992fe2, type: 2}
+  - {fileID: 1709254077376921, guid: a305137a315d2394c8eb8a389a4ec051, type: 3}
+  - {fileID: 1709254077376921, guid: c7b46e7b2dea7af4f9df50e65a6be277, type: 3}
+  - {fileID: 1709254077376921, guid: b8635a83a251af442816e5dc34992fe2, type: 3}
   m_resourceData: {fileID: 11400000, guid: dff42ca78de137248a254baf4bcb8484, type: 2}

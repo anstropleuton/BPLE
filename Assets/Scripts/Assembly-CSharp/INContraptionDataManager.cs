@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 public class INContraptionDataManager
 {
@@ -117,7 +118,7 @@ public class INContraptionDataManager
 			0 => "", 
 			_ => "B", 
 		};
-		Directory.CreateDirectory(m_dataDirectory);
+		INFileSystem.Directory.CreateDirectory(m_dataDirectory);
 	}
 
 	public ContraptionDataset LoadContraptionData(string levelName)
@@ -129,16 +130,20 @@ public class INContraptionDataManager
 		}
 		string text = dataDirectory + "/" + WPFPrefs.ContraptionFileName(levelName);
 		string path = dataDirectory + "/" + levelName;
+		bool flag = INFileSystem.File.Exists(text);
 		ContraptionDataset result;
-		if (!File.Exists(path))
+		if (!TryLoadAndConvert(path, out result))
 		{
-			result = ((!File.Exists(text)) ? new ContraptionDataset() : WPFPrefs.LoadOriginalContraptionDataset(dataDirectory, levelName));
+			if (flag)
+			{
+				result = WPFPrefs.LoadOriginalContraptionDataset(dataDirectory, levelName);
+			}
+			else
+			{
+				result = new ContraptionDataset();
+			}
 		}
-		else
-		{
-			TryLoadAndConvert(path, out result);
-		}
-		if (File.Exists(text))
+		if (flag)
 		{
 			if (Settings.BackupOriginalData)
 			{
@@ -146,7 +151,7 @@ public class INContraptionDataManager
 			}
 			else
 			{
-				File.Delete(text);
+				INFileSystem.File.Delete(text);
 			}
 		}
 		return result;
@@ -161,7 +166,7 @@ public class INContraptionDataManager
 			return;
 		}
 		string text = dataDirectory + "/" + levelName;
-		if (File.Exists(text) && Settings.BackupData)
+		if (INFileSystem.File.Exists(text) && Settings.BackupData)
 		{
 			BackupFile(text, text + ".bak");
 		}
@@ -179,8 +184,9 @@ public class INContraptionDataManager
 			result = Load(path).Convert();
 			return true;
 		}
-		catch
+		catch (Exception exception)
 		{
+			Debug.LogWarning("Failed to load contraption data from " + path + ": " + exception);
 			result = new ContraptionDataset();
 			return false;
 		}
@@ -223,7 +229,7 @@ public class INContraptionDataManager
 
 	private ContraptionData LoadCSVFile(string path)
 	{
-		using StreamReader streamReader = new StreamReader(path);
+		using StreamReader streamReader = new INFileSystem.StreamReader(path);
 		string[] array = streamReader.ReadToEnd().Split(new char[2] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 		int num = array.Length;
 		ContraptionData contraptionData = new ContraptionData(num);
@@ -247,7 +253,7 @@ public class INContraptionDataManager
 	private bool TryLoadCSVFile(string path, out ContraptionData result)
 	{
 		result = null;
-		using StreamReader streamReader = new StreamReader(path);
+		using StreamReader streamReader = new INFileSystem.StreamReader(path);
 		string[] array = streamReader.ReadToEnd().Split(new char[2] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 		int num = array.Length;
 		ContraptionData contraptionData = new ContraptionData(num);
@@ -272,7 +278,7 @@ public class INContraptionDataManager
 
 	private ContraptionData LoadJSONFile(string path)
 	{
-		using StreamReader reader = new StreamReader(path);
+		using StreamReader reader = new INFileSystem.StreamReader(path);
 		return INJsonSerializer.Deserialize<ContraptionData>(reader);
 	}
 
@@ -292,7 +298,7 @@ public class INContraptionDataManager
 
 	private void SaveCSVFile(string path, ContraptionData data)
 	{
-		using StreamWriter streamWriter = new StreamWriter(path);
+		using StreamWriter streamWriter = new INFileSystem.StreamWriter(path);
 		StringBuilder builder = m_builder;
 		builder.Clear();
 		ContraptionData.Unit[] items = data.items;
@@ -318,23 +324,23 @@ public class INContraptionDataManager
 
 	private void SaveJSONFile(string path, ContraptionData data)
 	{
-		using StreamWriter writer = new StreamWriter(path);
+		using StreamWriter writer = new INFileSystem.StreamWriter(path);
 		INJsonSerializer.Serialize(data, writer);
 	}
 
 	private static void BackupFile(string srcPath, string destPath)
 	{
-		if (!File.Exists(srcPath) || string.Equals(srcPath, destPath, StringComparison.OrdinalIgnoreCase))
+		if (!INFileSystem.File.Exists(srcPath) || string.Equals(srcPath, destPath, StringComparison.OrdinalIgnoreCase))
 		{
 			return;
 		}
 		try
 		{
-			if (File.Exists(destPath))
+			if (INFileSystem.File.Exists(destPath))
 			{
-				File.Delete(destPath);
+				INFileSystem.File.Delete(destPath);
 			}
-			File.Move(srcPath, destPath);
+			INFileSystem.File.Move(srcPath, destPath);
 		}
 		catch
 		{

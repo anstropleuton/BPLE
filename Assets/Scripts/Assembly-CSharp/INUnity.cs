@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public static class INUnity
@@ -40,8 +41,6 @@ public static class INUnity
 	{
 		Version = Version.Parse(Application.version);
 		VersionText = Application.version;
-		DataPath = Application.persistentDataPath;
-		SettingsPath = Application.persistentDataPath + "/Settings";
 		SystemLanguage systemLanguage = Application.systemLanguage;
 		if (systemLanguage == SystemLanguage.Chinese || systemLanguage == SystemLanguage.ChineseSimplified || systemLanguage == SystemLanguage.ChineseTraditional)
 		{
@@ -54,6 +53,12 @@ public static class INUnity
 		ArialFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
 		QuadMesh = Resources.GetBuiltinResource<Mesh>("Quad.fbx");
 		s_resources = new Dictionary<(string, string), UnityEngine.Object>();
+	}
+
+	public static void InitializeRoot()
+	{
+		DataPath = INFileSystem.Root;
+		SettingsPath = Path.Combine(DataPath, "Settings");
 	}
 
 	public static void Initialize(ResourceData data)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine;
 
 [Serializable]
 public class INUserSettings
@@ -66,11 +67,11 @@ public class INUserSettings
 	public static void Load()
 	{
 		string path = INUnity.SettingsPath + "/INUserSettings.json";
-		if (File.Exists(path))
+		if (INFileSystem.File.Exists(path))
 		{
 			try
 			{
-				using StreamReader reader = new StreamReader(path);
+				using StreamReader reader = new INFileSystem.StreamReader(path);
 				INUserSettings iNUserSettings = INJsonSerializer.Deserialize<INUserSettings>(reader);
 				if (iNUserSettings.Version != null && iNUserSettings.Version >= new Version(2022, 1, 0))
 				{
@@ -90,11 +91,11 @@ public class INUserSettings
 		string path = INUnity.SettingsPath + "/INUserSettings.json";
 		try
 		{
-			if (!Directory.Exists(settingsPath))
+			if (!INFileSystem.Directory.Exists(settingsPath))
 			{
-				Directory.CreateDirectory(settingsPath);
+				INFileSystem.Directory.CreateDirectory(settingsPath);
 			}
-			using StreamWriter writer = new StreamWriter(path);
+			using StreamWriter writer = new INFileSystem.StreamWriter(path);
 			INJsonSerializer.Serialize(Instance, writer);
 		}
 		catch
