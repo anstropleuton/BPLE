@@ -19,7 +19,6 @@ function Get-BuildContext {
 
         return [pscustomobject]@{
             BuildPath    = $FullPath
-            BuildName    = $BuildName
             Version      = $Version
             PlatformArch = $PlatformArch
             OutputStem   = "BPLE-$Version-windows-$PlatformArch"
@@ -31,7 +30,7 @@ function Get-BuildContext {
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RootDir   = Resolve-Path (Join-Path $ScriptDir "..")
-$DistDir   = Join-Path $RootDir "dist"
+$PublishedDir = Join-Path $RootDir "Builds/Published"
 $GeneratedDir = Join-Path $RootDir "Builds/Generated/Windows"
 $StageDir  = Join-Path $GeneratedDir "zip-stage"
 
@@ -39,7 +38,7 @@ $Ctx = Get-BuildContext -Path $BuildDir
 $BackupFolder = "新创Unity_BackUpThisFolder_ButDontShipItWithYourGame"
 $BadRootFiles = @("BPLE_Setup.exe", "installer.nsi")
 
-New-Item -ItemType Directory -Force -Path $DistDir | Out-Null
+New-Item -ItemType Directory -Force -Path $PublishedDir | Out-Null
 New-Item -ItemType Directory -Force -Path $GeneratedDir | Out-Null
 
 if (Test-Path $StageDir) {
@@ -52,7 +51,7 @@ if ($LASTEXITCODE -ge 8) {
     throw "robocopy failed with exit code $LASTEXITCODE"
 }
 
-$ZipPath = Join-Path $DistDir "$($Ctx.OutputStem).zip"
+$ZipPath = Join-Path $PublishedDir "$($Ctx.OutputStem).zip"
 if (Test-Path $ZipPath) {
     Remove-Item $ZipPath -Force
 }

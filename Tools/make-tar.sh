@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # (untested)
 set -euo pipefail
 
@@ -10,7 +10,7 @@ fi
 BUILD_DIR="$(cd "$1" && pwd)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-DIST_DIR="$ROOT_DIR/dist"
+PUBLISHED_DIR="$ROOT_DIR/Builds/Published"
 GENERATED_DIR="$ROOT_DIR/Builds/Generated/Linux"
 STAGE_DIR="$GENERATED_DIR/tar-stage"
 
@@ -23,10 +23,10 @@ else
 fi
 
 BACKUP_FOLDER="新创Unity_BackUpThisFolder_ButDontShipItWithYourGame"
-OUT_FILE="$DIST_DIR/BPLE-${VERSION}-linux-x86_64.tar.gz"
+OUT_FILE="$PUBLISHED_DIR/BPLE-${VERSION}-linux-x86_64.tar.gz"
 
 rm -rf "$STAGE_DIR"
-mkdir -p "$DIST_DIR" "$GENERATED_DIR" "$STAGE_DIR"
+mkdir -p "$PUBLISHED_DIR" "$GENERATED_DIR" "$STAGE_DIR"
 
 cp -a "$BUILD_DIR"/. "$STAGE_DIR"/
 rm -rf "$STAGE_DIR/$BACKUP_FOLDER"

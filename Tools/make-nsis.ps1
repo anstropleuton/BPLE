@@ -20,7 +20,6 @@ function Get-BuildContext {
 
         return [pscustomobject]@{
             BuildPath    = $FullPath
-            BuildName    = $BuildName
             Version      = $Version
             PlatformArch = $PlatformArch
             InstallRoot  = $InstallRoot
@@ -41,97 +40,31 @@ function New-IcoFromPng {
         [string]$IcoPath
     )
 
-    Add-Type -AssemblyName System.Drawing
-
-    Add-Type @"
-using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
-
-public static class IcoWriter
-{
-    public static void Write(string pngPath, string icoPath)
-    {
-        int[] sizes = new int[] { 16, 32, 48, 256 };
-        byte[][] blobs = new byte[sizes.Length][];
-
-        using (Bitmap source = new Bitmap(pngPath))
-        {
-            for (int i = 0; i < sizes.Length; i++)
-            {
-                int size = sizes[i];
-                using (Bitmap bmp = new Bitmap(size, size))
-                using (Graphics g = Graphics.FromImage(bmp))
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    g.Clear(Color.Transparent);
-                    g.CompositingQuality = CompositingQuality.HighQuality;
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    g.SmoothingMode = SmoothingMode.HighQuality;
-                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    g.DrawImage(source, 0, 0, size, size);
-                    bmp.Save(ms, ImageFormat.Png);
-                    blobs[i] = ms.ToArray();
-                }
-            }
-
-            using (FileStream fs = new FileStream(icoPath, FileMode.Create, FileAccess.Write))
-            using (BinaryWriter bw = new BinaryWriter(fs))
-            {
-                bw.Write((ushort)0);
-                bw.Write((ushort)1);
-                bw.Write((ushort)sizes.Length);
-
-                int offset = 6 + (16 * sizes.Length);
-
-                for (int i = 0; i < sizes.Length; i++)
-                {
-                    int size = sizes[i];
-                    byte width = (byte)(size >= 256 ? 0 : size);
-                    byte height = (byte)(size >= 256 ? 0 : size);
-
-                    bw.Write(width);
-                    bw.Write(height);
-                    bw.Write((byte)0);
-                    bw.Write((byte)0);
-                    bw.Write((ushort)1);
-                    bw.Write((ushort)32);
-                    bw.Write(blobs[i].Length);
-                    bw.Write(offset);
-
-                    offset += blobs[i].Length;
-                }
-
-                for (int i = 0; i < sizes.Length; i++)
-                {
-                    bw.Write(blobs[i]);
-                }
-            }
-        }
+    $Magick = Get-Command magick.exe -ErrorAction SilentlyContinue
+    if (-not $Magick) {
+        throw "ImageMagick 'magick' not found on PATH."
     }
-}
-"@
 
-    [IcoWriter]::Write($PngPath, $IcoPath)
+    & $Magick.Source $PngPath -resize 512x512 $IcoPath
+    if ($LASTEXITCODE -ne 0) {
+        throw "ImageMagick failed while creating $IcoPath"
+    }
 }
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RootDir   = Resolve-Path (Join-Path $ScriptDir "..")
-$DistDir   = Join-Path $RootDir "dist"
+$PublishedDir = Join-Path $RootDir "Builds/Published"
 $GeneratedDir = Join-Path $RootDir "Builds/Generated/Windows"
 $NsisDir   = Join-Path $GeneratedDir "nsis"
 
 $Ctx = Get-BuildContext -Path $BuildDir
 $BackupFolder = "新创Unity_BackUpThisFolder_ButDontShipItWithYourGame"
-$BadRootFiles = @("BPLE_Setup.exe", "installer.nsi")
 $IconSrc = Join-Path $RootDir "Assets/Texture2D/App Icon.png"
 $IconOut = Join-Path $NsisDir "$($Ctx.OutputStem).ico"
 $NsiOut = Join-Path $NsisDir "$($Ctx.OutputStem).nsi"
-$OutFile = Join-Path $DistDir "$($Ctx.OutputStem)-setup.exe"
+$OutFile = Join-Path $PublishedDir "$($Ctx.OutputStem)-setup.exe"
 
-New-Item -ItemType Directory -Force -Path $DistDir | Out-Null
+New-Item -ItemType Directory -Force -Path $PublishedDir | Out-Null
 New-Item -ItemType Directory -Force -Path $GeneratedDir | Out-Null
 New-Item -ItemType Directory -Force -Path $NsisDir | Out-Null
 
@@ -206,4 +139,8 @@ if (-not $Makensis) {
 }
 
 & $Makensis.Source $NsiOut
+if ($LASTEXITCODE -ne 0) {
+    throw "NSIS failed with exit code $LASTEXITCODE"
+}
+
 Write-Host "Built installer: $OutFile"

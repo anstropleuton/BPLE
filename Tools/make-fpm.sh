@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # (untested)
 set -euo pipefail
 
@@ -11,7 +11,7 @@ TYPE="$1"
 BUILD_DIR="$(cd "$2" && pwd)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-DIST_DIR="$ROOT_DIR/dist"
+PUBLISHED_DIR="$ROOT_DIR/Builds/Published"
 GENERATED_DIR="$ROOT_DIR/Builds/Generated/Linux"
 STAGE_DIR="$GENERATED_DIR/fpm-stage-$TYPE"
 ICON_SRC="$ROOT_DIR/Assets/Texture2D/App Icon.png"
@@ -24,7 +24,7 @@ else
   exit 1
 fi
 
-APP_NAME="BPLE $VERSION"
+APP_NAME="BPLE ${VERSION}"
 PKG_NAME="bple"
 APP_EXE="新创Unity.x86_64"
 BACKUP_FOLDER="新创Unity_BackUpThisFolder_ButDontShipItWithYourGame"
@@ -32,25 +32,23 @@ BACKUP_FOLDER="新创Unity_BackUpThisFolder_ButDontShipItWithYourGame"
 case "$TYPE" in
   deb)
     FPM_ARCH="amd64"
-    OUT_FILE="$DIST_DIR/${PKG_NAME}_${VERSION}_amd64.deb"
+    OUT_FILE="$PUBLISHED_DIR/${PKG_NAME}_${VERSION}_amd64.deb"
     ;;
   rpm)
     FPM_ARCH="x86_64"
-    RPM_VERSION="${VERSION%-*}"
-    RPM_RELEASE="${VERSION##*-}"
-    if [[ "$RPM_VERSION" == "$RPM_RELEASE" ]]; then
-      RPM_VERSION="$VERSION"
-      RPM_RELEASE="1"
-    fi
-    OUT_FILE="$DIST_DIR/${PKG_NAME}-${RPM_VERSION}-${RPM_RELEASE}.x86_64.rpm"
+    OUT_FILE="$PUBLISHED_DIR/${PKG_NAME}-${VERSION}.x86_64.rpm"
     ;;
   pacman)
     FPM_ARCH="x86_64"
-    OUT_FILE="$DIST_DIR/${PKG_NAME}-${VERSION}-1-x86_64.pkg.tar.zst"
+    OUT_FILE="$PUBLISHED_DIR/${PKG_NAME}-${VERSION}-x86_64.pkg.tar.zst"
     ;;
   apk)
     FPM_ARCH="x86_64"
-    OUT_FILE="$DIST_DIR/${PKG_NAME}-${VERSION}-r1-x86_64.apk"
+    OUT_FILE="$PUBLISHED_DIR/${PKG_NAME}-${VERSION}-x86_64.apk"
+    ;;
+  sh)
+    FPM_ARCH="x86_64"
+    OUT_FILE="$PUBLISHED_DIR/${PKG_NAME}-${VERSION}-x86_64.sh"
     ;;
   *)
     echo "Unsupported package type: $TYPE" >&2
@@ -70,13 +68,13 @@ fi
 
 rm -rf "$STAGE_DIR"
 mkdir -p \
-  "$DIST_DIR" \
+  "$PUBLISHED_DIR" \
   "$GENERATED_DIR" \
   "$STAGE_DIR/opt/$PKG_NAME" \
   "$STAGE_DIR/usr/bin" \
   "$STAGE_DIR/usr/share/applications" \
   "$STAGE_DIR/usr/share/pixmaps" \
-  "$STAGE_DIR/usr/share/icons/hicolor/256x256/apps"
+  "$STAGE_DIR/usr/share/icons/hicolor/512x512/apps"
 
 cp -a "$BUILD_DIR"/. "$STAGE_DIR/opt/$PKG_NAME"/
 rm -rf "$STAGE_DIR/opt/$PKG_NAME/$BACKUP_FOLDER"
@@ -105,34 +103,22 @@ Categories=Game;
 EOF
 
 cp "$ICON_SRC" "$STAGE_DIR/usr/share/pixmaps/${PKG_NAME}.png"
-cp "$ICON_SRC" "$STAGE_DIR/usr/share/icons/hicolor/256x256/apps/${PKG_NAME}.png"
+cp "$ICON_SRC" "$STAGE_DIR/usr/share/icons/hicolor/512x512/apps/${PKG_NAME}.png"
+
+rm -f "$OUT_FILE"
 
 pushd "$STAGE_DIR" >/dev/null
-if [[ "$TYPE" == "rpm" ]]; then
-  fpm -s dir -t rpm -a "$FPM_ARCH" \
-    -n "$PKG_NAME" \
-    -v "$RPM_VERSION" \
-    --iteration "$RPM_RELEASE" \
-    --description "$APP_NAME" \
-    -p "$OUT_FILE" \
-    opt/$PKG_NAME=/opt/$PKG_NAME \
-    usr/bin/$PKG_NAME=/usr/bin/$PKG_NAME \
-    usr/share/applications/$PKG_NAME.desktop=/usr/share/applications/$PKG_NAME.desktop \
-    usr/share/pixmaps/${PKG_NAME}.png=/usr/share/pixmaps/${PKG_NAME}.png \
-    usr/share/icons/hicolor/256x256/apps/${PKG_NAME}.png=/usr/share/icons/hicolor/256x256/apps/${PKG_NAME}.png
-else
-  fpm -s dir -t "$TYPE" -a "$FPM_ARCH" \
-    -n "$PKG_NAME" \
-    -v "$VERSION" \
-    --iteration 1 \
-    --description "$APP_NAME" \
-    -p "$OUT_FILE" \
-    opt/$PKG_NAME=/opt/$PKG_NAME \
-    usr/bin/$PKG_NAME=/usr/bin/$PKG_NAME \
-    usr/share/applications/$PKG_NAME.desktop=/usr/share/applications/$PKG_NAME.desktop \
-    usr/share/pixmaps/${PKG_NAME}.png=/usr/share/pixmaps/${PKG_NAME}.png \
-    usr/share/icons/hicolor/256x256/apps/${PKG_NAME}.png=/usr/share/icons/hicolor/256x256/apps/${PKG_NAME}.png
-fi
+fpm -s dir -t "$TYPE" -a "$FPM_ARCH" \
+  -n "$PKG_NAME" \
+  -v "$VERSION" \
+  --iteration 1 \
+  --description "$APP_NAME" \
+  -p "$OUT_FILE" \
+  opt/$PKG_NAME=/opt/$PKG_NAME \
+  usr/bin/$PKG_NAME=/usr/bin/$PKG_NAME \
+  usr/share/applications/$PKG_NAME.desktop=/usr/share/applications/$PKG_NAME.desktop \
+  usr/share/pixmaps/${PKG_NAME}.png=/usr/share/pixmaps/${PKG_NAME}.png \
+  usr/share/icons/hicolor/512x512/apps/${PKG_NAME}.png=/usr/share/icons/hicolor/512x512/apps/${PKG_NAME}.png
 popd >/dev/null
 
 rm -rf "$STAGE_DIR"
