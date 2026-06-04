@@ -21,6 +21,8 @@ public static class INUnity
 
 	public static string VersionText { get; private set; }
 
+	public static int BuildVersion { get; private set; }
+
 	public static string DataPath { get; private set; }
 
 	public static string SettingsPath { get; private set; }
@@ -39,8 +41,14 @@ public static class INUnity
 
 	static INUnity()
 	{
-		Version = Version.Parse(Application.version);
 		VersionText = Application.version;
+		string[] array = VersionText.Split('-', 2);
+		Version = Version.Parse(array[0]);
+		BuildVersion = -1;
+		if (array.Length > 1)
+		{
+			BuildVersion = int.Parse(array[1]);
+		}
 		SystemLanguage systemLanguage = Application.systemLanguage;
 		if (systemLanguage == SystemLanguage.Chinese || systemLanguage == SystemLanguage.ChineseSimplified || systemLanguage == SystemLanguage.ChineseTraditional)
 		{

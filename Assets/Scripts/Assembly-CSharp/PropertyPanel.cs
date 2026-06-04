@@ -40,6 +40,10 @@ public class PropertyPanel : INBehaviour
 		}));
 		m_prefix = "\u3000";
 		m_versionText = FormatHeading1(text + " " + INUnity.VersionText);
+		if (INUnity.BuildVersion != -1)
+		{
+			m_versionText += " (Build " + (INUnity.BuildVersion + 1) + ")";
+		}
 		m_fontSize = INSettings.GetInt(INFeature.PropertyPanelFontSize);
 		m_outlineWidth = INSettings.GetFloat(INFeature.PropertyPanelOutlineWidth);
 		try
