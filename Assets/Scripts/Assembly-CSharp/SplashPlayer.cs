@@ -10,12 +10,6 @@ public class SplashPlayer : MonoBehaviour
 	{
 		if (INUnity.Enabled)
 		{
-			INFileSystem.LoadRoot();
-			while (Application.platform == RuntimePlatform.Android && !INFileSystem.RootReady)
-			{
-				INFileSystem.PollRootLoad();
-				yield return null;
-			}
 			Debug.Log($"INFileSystem root: {INFileSystem.Root}");
 			INUnity.InitializeRoot();
 			INInitializer initializer = Object.Instantiate(Resources.Load<GameObject>("Innovation/INInitializer")).GetComponent<INInitializer>();

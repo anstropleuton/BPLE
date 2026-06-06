@@ -118,7 +118,7 @@ public class INContraptionDataManager
 			0 => "", 
 			_ => "B", 
 		};
-		INFileSystem.Directory.CreateDirectory(m_dataDirectory);
+		Directory.CreateDirectory(m_dataDirectory);
 	}
 
 	public ContraptionDataset LoadContraptionData(string levelName)
@@ -130,7 +130,7 @@ public class INContraptionDataManager
 		}
 		string text = dataDirectory + "/" + WPFPrefs.ContraptionFileName(levelName);
 		string path = dataDirectory + "/" + levelName;
-		bool flag = INFileSystem.File.Exists(text);
+		bool flag = File.Exists(text);
 		ContraptionDataset result;
 		if (!TryLoadAndConvert(path, out result))
 		{
@@ -151,7 +151,7 @@ public class INContraptionDataManager
 			}
 			else
 			{
-				INFileSystem.File.Delete(text);
+				File.Delete(text);
 			}
 		}
 		return result;
@@ -166,7 +166,7 @@ public class INContraptionDataManager
 			return;
 		}
 		string text = dataDirectory + "/" + levelName;
-		if (INFileSystem.File.Exists(text) && Settings.BackupData)
+		if (File.Exists(text) && Settings.BackupData)
 		{
 			BackupFile(text, text + ".bak");
 		}
@@ -229,7 +229,7 @@ public class INContraptionDataManager
 
 	private ContraptionData LoadCSVFile(string path)
 	{
-		using StreamReader streamReader = new INFileSystem.StreamReader(path);
+		using StreamReader streamReader = new StreamReader(path);
 		string[] array = streamReader.ReadToEnd().Split(new char[2] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 		int num = array.Length;
 		ContraptionData contraptionData = new ContraptionData(num);
@@ -253,7 +253,7 @@ public class INContraptionDataManager
 	private bool TryLoadCSVFile(string path, out ContraptionData result)
 	{
 		result = null;
-		using StreamReader streamReader = new INFileSystem.StreamReader(path);
+		using StreamReader streamReader = new StreamReader(path);
 		string[] array = streamReader.ReadToEnd().Split(new char[2] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 		int num = array.Length;
 		ContraptionData contraptionData = new ContraptionData(num);
@@ -278,7 +278,7 @@ public class INContraptionDataManager
 
 	private ContraptionData LoadJSONFile(string path)
 	{
-		using StreamReader reader = new INFileSystem.StreamReader(path);
+		using StreamReader reader = new StreamReader(path);
 		return INJsonSerializer.Deserialize<ContraptionData>(reader);
 	}
 
@@ -298,7 +298,7 @@ public class INContraptionDataManager
 
 	private void SaveCSVFile(string path, ContraptionData data)
 	{
-		using StreamWriter streamWriter = new INFileSystem.StreamWriter(path);
+		using StreamWriter streamWriter = new StreamWriter(path);
 		StringBuilder builder = m_builder;
 		builder.Clear();
 		ContraptionData.Unit[] items = data.items;
@@ -324,23 +324,23 @@ public class INContraptionDataManager
 
 	private void SaveJSONFile(string path, ContraptionData data)
 	{
-		using StreamWriter writer = new INFileSystem.StreamWriter(path);
+		using StreamWriter writer = new StreamWriter(path);
 		INJsonSerializer.Serialize(data, writer);
 	}
 
 	private static void BackupFile(string srcPath, string destPath)
 	{
-		if (!INFileSystem.File.Exists(srcPath) || string.Equals(srcPath, destPath, StringComparison.OrdinalIgnoreCase))
+		if (!File.Exists(srcPath) || string.Equals(srcPath, destPath, StringComparison.OrdinalIgnoreCase))
 		{
 			return;
 		}
 		try
 		{
-			if (INFileSystem.File.Exists(destPath))
+			if (File.Exists(destPath))
 			{
-				INFileSystem.File.Delete(destPath);
+				File.Delete(destPath);
 			}
-			INFileSystem.File.Move(srcPath, destPath);
+			File.Move(srcPath, destPath);
 		}
 		catch
 		{

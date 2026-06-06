@@ -67,11 +67,11 @@ public class INUserSettings
 	public static void Load()
 	{
 		string path = INUnity.SettingsPath + "/INUserSettings.json";
-		if (INFileSystem.File.Exists(path))
+		if (File.Exists(path))
 		{
 			try
 			{
-				using StreamReader reader = new INFileSystem.StreamReader(path);
+				using StreamReader reader = new StreamReader(path);
 				INUserSettings iNUserSettings = INJsonSerializer.Deserialize<INUserSettings>(reader);
 				if (iNUserSettings.Version != null && iNUserSettings.Version >= new Version(2022, 1, 0))
 				{
@@ -91,11 +91,11 @@ public class INUserSettings
 		string path = INUnity.SettingsPath + "/INUserSettings.json";
 		try
 		{
-			if (!INFileSystem.Directory.Exists(settingsPath))
+			if (!Directory.Exists(settingsPath))
 			{
-				INFileSystem.Directory.CreateDirectory(settingsPath);
+				Directory.CreateDirectory(settingsPath);
 			}
-			using StreamWriter writer = new INFileSystem.StreamWriter(path);
+			using StreamWriter writer = new StreamWriter(path);
 			INJsonSerializer.Serialize(Instance, writer);
 		}
 		catch
