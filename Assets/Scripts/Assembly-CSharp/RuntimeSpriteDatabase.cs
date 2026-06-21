@@ -9,6 +9,8 @@ public class RuntimeSpriteDatabase : Singleton<RuntimeSpriteDatabase>
 {
 	private Dictionary<string, SpriteData> m_data;
 
+	public Dictionary<string, SpriteData> Data => m_data;
+
 	private void Awake()
 	{
 		UnityEngine.Object.DontDestroyOnLoad(this);
