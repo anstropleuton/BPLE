@@ -109,3 +109,8 @@ InitTestScene*.unity*
 
 # Streaming assets completely gone
 /[Aa]ssets/StreamingAssets/
+
+# Editor files
+/.vscode/
+/.vs/
+/.idea/
