@@ -24,7 +24,7 @@ public class INInitializer : MonoBehaviour
 	private void Awake()
 	{
 		m_useAlphaAnimation = true;
-		m_time = 3f;
+		m_time = 0.3f;
 		StartCoroutine(Initialize());
 	}
 
