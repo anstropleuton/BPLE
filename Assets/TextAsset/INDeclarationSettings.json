@@ -38,12 +38,12 @@
 		{
 			"name": "UnlockLevels",
 			"type": "Boolean",
-			"value": false
+			"value": true
 		},
 		{
 			"name": "UnlockSandBoxes",
 			"type": "Boolean",
-			"value": false
+			"value": true
 		},
 		{
 			"name": "UnlockCustomParts",
