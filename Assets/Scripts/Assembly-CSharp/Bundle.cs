@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -339,22 +340,22 @@ public class Bundle : MonoBehaviour
 			}
 		}
 	}
-	
-	private static string GetPlatformFolder()
-	{
-		return Application.platform switch
-		{
-			RuntimePlatform.Android => "Android",
-			RuntimePlatform.WindowsPlayer => "Windows",
-			RuntimePlatform.LinuxPlayer => "Linux",
-			RuntimePlatform.IPhonePlayer => "iOS",
-			RuntimePlatform.OSXPlayer => "macOS",
-			_ => "Windows",
-		};
-	}
 
 	private static string GetBundleLocation(string bundleFileName)
 	{
-		return Path.Combine(Application.streamingAssetsPath, "AssetBundles", GetPlatformFolder(), bundleFileName.ToLowerInvariant());
+        string fileNameLower = bundleFileName.ToLowerInvariant();
+#if UNITY_EDITOR
+        string folderName = EditorUserBuildSettings.activeBuildTarget switch
+        {
+            BuildTarget.StandaloneWindows64 or BuildTarget.StandaloneWindows => "Windows",
+            BuildTarget.StandaloneLinux64 => "Linux",
+            BuildTarget.Android => "Android",
+            _ => null,
+        };
+
+        return Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), "Library", "BuiltAssetBundles", folderName, fileNameLower);
+#else
+        return Path.Combine(Application.streamingAssetsPath, "AssetBundles", fileNameLower);
+#endif
 	}
 }
