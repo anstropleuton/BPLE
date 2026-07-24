@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class LevelSelector : WPFMonoBehaviour
@@ -314,7 +315,7 @@ public class LevelSelector : WPFMonoBehaviour
 		}
 		startedLevelLoading = true;
 		SendStandardFlurryEvent("Select Level", levelIndex);
-		int num = int.Parse(levelIndex);
+		int num = int.Parse(levelIndex, CultureInfo.InvariantCulture);
 		if (num >= 0)
 		{
 			if (m_oneTimeCutscene.enabled && !GameProgress.GetBool(m_oneTimeCutscene.saveId))
@@ -355,12 +356,12 @@ public class LevelSelector : WPFMonoBehaviour
 		SendStandardFlurryEvent("Select Level", levelIndex);
 		if (m_oneTimeCutscene.enabled && !GameProgress.GetBool(m_oneTimeCutscene.saveId))
 		{
-			Singleton<GameManager>.Instance.LoadLevelAfterCutScene(m_levels[int.Parse(levelIndex)], m_oneTimeCutscene.cutScene);
+			Singleton<GameManager>.Instance.LoadLevelAfterCutScene(m_levels[int.Parse(levelIndex, CultureInfo.InvariantCulture)], m_oneTimeCutscene.cutScene);
 			GameProgress.SetBool(m_oneTimeCutscene.saveId, value: true);
 		}
 		else
 		{
-			Singleton<GameManager>.Instance.LoadStarLevelTransition(m_levels[int.Parse(levelIndex)]);
+			Singleton<GameManager>.Instance.LoadStarLevelTransition(m_levels[int.Parse(levelIndex, CultureInfo.InvariantCulture)]);
 		}
 	}
 

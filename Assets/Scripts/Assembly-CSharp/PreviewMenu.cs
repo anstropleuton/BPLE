@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class PreviewMenu : WPFMonoBehaviour
@@ -25,7 +26,7 @@ public class PreviewMenu : WPFMonoBehaviour
 
 	public void OpenObjectiveTutorial(string slot)
 	{
-		int num = int.Parse(slot) - 2;
+		int num = int.Parse(slot, CultureInfo.InvariantCulture) - 2;
 		if (num >= 0 && num <= 1)
 		{
 			WPFMonoBehaviour.levelManager.m_levelCompleteTutorialBookPagePrefab = m_challenges[num].m_tutorialBookPage;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class INSpriteManager : Singleton<INSpriteManager>
@@ -41,14 +42,14 @@ public class INSpriteManager : Singleton<INSpriteManager>
 		string[] array = text.Split(new char[2] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 		string[] array2 = array[0].Split(new char[2] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 		string key = array2[0];
-		Vector2Int textureSize = new Vector2Int(int.Parse(array2[1]), int.Parse(array2[2]));
+		Vector2Int textureSize = new Vector2Int(int.Parse(array2[1], CultureInfo.InvariantCulture), int.Parse(array2[2], CultureInfo.InvariantCulture));
 		for (int i = 1; i < array.Length; i++)
 		{
 			array2 = array[i].Split(new char[2] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 			string key2 = array2[0];
-			Rect rect = new Rect(float.Parse(array2[1]), float.Parse(array2[2]), float.Parse(array2[3]), float.Parse(array2[4]));
-			Vector2 scale = new Vector2(float.Parse(array2[5]), float.Parse(array2[6]));
-			int screenHeight = int.Parse(array2[7]);
+			Rect rect = new Rect(float.Parse(array2[1], CultureInfo.InvariantCulture), float.Parse(array2[2], CultureInfo.InvariantCulture), float.Parse(array2[3], CultureInfo.InvariantCulture), float.Parse(array2[4], CultureInfo.InvariantCulture));
+			Vector2 scale = new Vector2(float.Parse(array2[5], CultureInfo.InvariantCulture), float.Parse(array2[6], CultureInfo.InvariantCulture));
+			int screenHeight = int.Parse(array2[7], CultureInfo.InvariantCulture);
 			dictionary[key2] = new INSpriteData(rect, scale, screenHeight, textureSize);
 		}
 		m_atlasData.Add(key, dictionary);

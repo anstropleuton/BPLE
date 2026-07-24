@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class DailyChallenge : Singleton<DailyChallenge>
@@ -154,33 +155,33 @@ public class DailyChallenge : Singleton<DailyChallenge>
 		public ChallengeConfigs(Hashtable data)
 		{
 			unlockedLevelChance = new Dictionary<LootCrateType, float>();
-			unlockedLevelChance.Add(LootCrateType.Wood, (!data.ContainsKey("unlocked_chance_wood")) ? 0f : float.Parse(data["unlocked_chance_wood"] as string));
-			unlockedLevelChance.Add(LootCrateType.Metal, (!data.ContainsKey("unlocked_chance_metal")) ? 0f : float.Parse(data["unlocked_chance_metal"] as string));
-			unlockedLevelChance.Add(LootCrateType.Gold, (!data.ContainsKey("unlocked_chance_gold")) ? 0f : float.Parse(data["unlocked_chance_gold"] as string));
+			unlockedLevelChance.Add(LootCrateType.Wood, (!data.ContainsKey("unlocked_chance_wood")) ? 0f : float.Parse(data["unlocked_chance_wood"] as string, CultureInfo.InvariantCulture));
+			unlockedLevelChance.Add(LootCrateType.Metal, (!data.ContainsKey("unlocked_chance_metal")) ? 0f : float.Parse(data["unlocked_chance_metal"] as string, CultureInfo.InvariantCulture));
+			unlockedLevelChance.Add(LootCrateType.Gold, (!data.ContainsKey("unlocked_chance_gold")) ? 0f : float.Parse(data["unlocked_chance_gold"] as string, CultureInfo.InvariantCulture));
 			lockedLevelChance1 = new Dictionary<LootCrateType, float>();
-			lockedLevelChance1.Add(LootCrateType.Wood, (!data.ContainsKey("1_locked_chance_wood")) ? 0f : float.Parse(data["1_locked_chance_wood"] as string));
-			lockedLevelChance1.Add(LootCrateType.Metal, (!data.ContainsKey("1_locked_chance_metal")) ? 0f : float.Parse(data["1_locked_chance_metal"] as string));
-			lockedLevelChance1.Add(LootCrateType.Gold, (!data.ContainsKey("1_locked_chance_gold")) ? 0f : float.Parse(data["1_locked_chance_gold"] as string));
+			lockedLevelChance1.Add(LootCrateType.Wood, (!data.ContainsKey("1_locked_chance_wood")) ? 0f : float.Parse(data["1_locked_chance_wood"] as string, CultureInfo.InvariantCulture));
+			lockedLevelChance1.Add(LootCrateType.Metal, (!data.ContainsKey("1_locked_chance_metal")) ? 0f : float.Parse(data["1_locked_chance_metal"] as string, CultureInfo.InvariantCulture));
+			lockedLevelChance1.Add(LootCrateType.Gold, (!data.ContainsKey("1_locked_chance_gold")) ? 0f : float.Parse(data["1_locked_chance_gold"] as string, CultureInfo.InvariantCulture));
 			lockedLevelChance2 = new Dictionary<LootCrateType, float>();
-			lockedLevelChance2.Add(LootCrateType.Wood, (!data.ContainsKey("2_locked_chance_wood")) ? 0f : float.Parse(data["2_locked_chance_wood"] as string));
-			lockedLevelChance2.Add(LootCrateType.Metal, (!data.ContainsKey("2_locked_chance_metal")) ? 0f : float.Parse(data["2_locked_chance_metal"] as string));
-			lockedLevelChance2.Add(LootCrateType.Gold, (!data.ContainsKey("2_locked_chance_gold")) ? 0f : float.Parse(data["2_locked_chance_gold"] as string));
+			lockedLevelChance2.Add(LootCrateType.Wood, (!data.ContainsKey("2_locked_chance_wood")) ? 0f : float.Parse(data["2_locked_chance_wood"] as string, CultureInfo.InvariantCulture));
+			lockedLevelChance2.Add(LootCrateType.Metal, (!data.ContainsKey("2_locked_chance_metal")) ? 0f : float.Parse(data["2_locked_chance_metal"] as string, CultureInfo.InvariantCulture));
+			lockedLevelChance2.Add(LootCrateType.Gold, (!data.ContainsKey("2_locked_chance_gold")) ? 0f : float.Parse(data["2_locked_chance_gold"] as string, CultureInfo.InvariantCulture));
 			unlockedJokerLevelChance = new Dictionary<LootCrateType, float>();
-			unlockedJokerLevelChance.Add(LootCrateType.Wood, (!data.ContainsKey("unlocked_joker_level_wood")) ? 0f : float.Parse(data["unlocked_joker_level_wood"] as string));
-			unlockedJokerLevelChance.Add(LootCrateType.Metal, (!data.ContainsKey("unlocked_joker_level_metal")) ? 0f : float.Parse(data["unlocked_joker_level_metal"] as string));
-			unlockedJokerLevelChance.Add(LootCrateType.Gold, (!data.ContainsKey("unlocked_joker_level_gold")) ? 0f : float.Parse(data["unlocked_joker_level_gold"] as string));
+			unlockedJokerLevelChance.Add(LootCrateType.Wood, (!data.ContainsKey("unlocked_joker_level_wood")) ? 0f : float.Parse(data["unlocked_joker_level_wood"] as string, CultureInfo.InvariantCulture));
+			unlockedJokerLevelChance.Add(LootCrateType.Metal, (!data.ContainsKey("unlocked_joker_level_metal")) ? 0f : float.Parse(data["unlocked_joker_level_metal"] as string, CultureInfo.InvariantCulture));
+			unlockedJokerLevelChance.Add(LootCrateType.Gold, (!data.ContainsKey("unlocked_joker_level_gold")) ? 0f : float.Parse(data["unlocked_joker_level_gold"] as string, CultureInfo.InvariantCulture));
 			lockedJokerLevelChance = new Dictionary<LootCrateType, float>();
-			lockedJokerLevelChance.Add(LootCrateType.Wood, (!data.ContainsKey("locked_joker_level_wood")) ? 0f : float.Parse(data["locked_joker_level_wood"] as string));
-			lockedJokerLevelChance.Add(LootCrateType.Metal, (!data.ContainsKey("locked_joker_level_metal")) ? 0f : float.Parse(data["locked_joker_level_metal"] as string));
-			lockedJokerLevelChance.Add(LootCrateType.Gold, (!data.ContainsKey("locked_joker_level_gold")) ? 0f : float.Parse(data["locked_joker_level_gold"] as string));
+			lockedJokerLevelChance.Add(LootCrateType.Wood, (!data.ContainsKey("locked_joker_level_wood")) ? 0f : float.Parse(data["locked_joker_level_wood"] as string, CultureInfo.InvariantCulture));
+			lockedJokerLevelChance.Add(LootCrateType.Metal, (!data.ContainsKey("locked_joker_level_metal")) ? 0f : float.Parse(data["locked_joker_level_metal"] as string, CultureInfo.InvariantCulture));
+			lockedJokerLevelChance.Add(LootCrateType.Gold, (!data.ContainsKey("locked_joker_level_gold")) ? 0f : float.Parse(data["locked_joker_level_gold"] as string, CultureInfo.InvariantCulture));
 			maxUnlockDistance1 = new Dictionary<LootCrateType, int>();
-			maxUnlockDistance1.Add(LootCrateType.Wood, data.ContainsKey("1_max_unlock_distance_wood") ? int.Parse(data["1_max_unlock_distance_wood"] as string) : 0);
-			maxUnlockDistance1.Add(LootCrateType.Metal, data.ContainsKey("1_max_unlock_distance_metal") ? int.Parse(data["1_max_unlock_distance_metal"] as string) : 0);
-			maxUnlockDistance1.Add(LootCrateType.Gold, data.ContainsKey("1_max_unlock_distance_gold") ? int.Parse(data["1_max_unlock_distance_gold"] as string) : 0);
+			maxUnlockDistance1.Add(LootCrateType.Wood, data.ContainsKey("1_max_unlock_distance_wood") ? int.Parse(data["1_max_unlock_distance_wood"] as string, CultureInfo.InvariantCulture) : 0);
+			maxUnlockDistance1.Add(LootCrateType.Metal, data.ContainsKey("1_max_unlock_distance_metal") ? int.Parse(data["1_max_unlock_distance_metal"] as string, CultureInfo.InvariantCulture) : 0);
+			maxUnlockDistance1.Add(LootCrateType.Gold, data.ContainsKey("1_max_unlock_distance_gold") ? int.Parse(data["1_max_unlock_distance_gold"] as string, CultureInfo.InvariantCulture) : 0);
 			maxUnlockDistance2 = new Dictionary<LootCrateType, int>();
-			maxUnlockDistance2.Add(LootCrateType.Wood, data.ContainsKey("2_max_unlock_distance_wood") ? int.Parse(data["2_max_unlock_distance_wood"] as string) : 0);
-			maxUnlockDistance2.Add(LootCrateType.Metal, data.ContainsKey("2_max_unlock_distance_metal") ? int.Parse(data["2_max_unlock_distance_metal"] as string) : 0);
-			maxUnlockDistance2.Add(LootCrateType.Gold, data.ContainsKey("2_max_unlock_distance_gold") ? int.Parse(data["2_max_unlock_distance_gold"] as string) : 0);
+			maxUnlockDistance2.Add(LootCrateType.Wood, data.ContainsKey("2_max_unlock_distance_wood") ? int.Parse(data["2_max_unlock_distance_wood"] as string, CultureInfo.InvariantCulture) : 0);
+			maxUnlockDistance2.Add(LootCrateType.Metal, data.ContainsKey("2_max_unlock_distance_metal") ? int.Parse(data["2_max_unlock_distance_metal"] as string, CultureInfo.InvariantCulture) : 0);
+			maxUnlockDistance2.Add(LootCrateType.Gold, data.ContainsKey("2_max_unlock_distance_gold") ? int.Parse(data["2_max_unlock_distance_gold"] as string, CultureInfo.InvariantCulture) : 0);
 		}
 
 		public float GetUnlockLevelChance(LootCrateType type)

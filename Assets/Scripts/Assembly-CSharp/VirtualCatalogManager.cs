@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 public class VirtualCatalogManager : Singleton<VirtualCatalogManager>
@@ -127,7 +128,7 @@ public class VirtualCatalogManager : Singleton<VirtualCatalogManager>
 			if (Enum.IsDefined(typeof(IapManager.BundleItem.BundleItemType), (string)item.Key))
 			{
 				IapManager.BundleItem.BundleItemType type = (IapManager.BundleItem.BundleItemType)Enum.Parse(typeof(IapManager.BundleItem.BundleItemType), (string)item.Key);
-				int count = int.Parse((string)item.Value);
+				int count = int.Parse((string)item.Value, CultureInfo.InvariantCulture);
 				list.Add(new IapManager.BundleItem(type, count));
 			}
 		}

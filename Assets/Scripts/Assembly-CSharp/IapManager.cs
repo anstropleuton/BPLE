@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Pathfinding.Serialization.JsonFx;
 using UnityEngine;
 
@@ -1207,7 +1208,7 @@ public class IapManager : Singleton<IapManager>
 				{
 					if (Enum.IsDefined(typeof(BundleItem.BundleItemType), (string)item.Key))
 					{
-						return int.Parse((string)item.Value);
+						return int.Parse((string)item.Value, CultureInfo.InvariantCulture);
 					}
 				}
 				return 0;

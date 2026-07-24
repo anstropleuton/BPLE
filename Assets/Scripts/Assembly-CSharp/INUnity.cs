@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 
@@ -47,7 +48,7 @@ public static class INUnity
 		BuildVersion = -1;
 		if (array.Length > 1)
 		{
-			BuildVersion = int.Parse(array[1]);
+			BuildVersion = int.Parse(array[1], CultureInfo.InvariantCulture);
 		}
 		SystemLanguage systemLanguage = Application.systemLanguage;
 		if (systemLanguage == SystemLanguage.Chinese || systemLanguage == SystemLanguage.ChineseSimplified || systemLanguage == SystemLanguage.ChineseTraditional)

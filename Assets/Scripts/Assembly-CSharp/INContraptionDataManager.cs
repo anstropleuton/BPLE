@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -238,12 +239,12 @@ public class INContraptionDataManager
 			string[] array2 = array[i].Split(new char[2] { ',', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 			ContraptionData.Unit unit = new ContraptionData.Unit
 			{
-				Type = int.Parse(array2[0]),
-				Index = int.Parse(array2[1]),
-				X = int.Parse(array2[2]),
-				Y = int.Parse(array2[3]),
-				Rotation = int.Parse(array2[4]),
-				Flipped = int.Parse(array2[5])
+				Type = int.Parse(array2[0], CultureInfo.InvariantCulture),
+				Index = int.Parse(array2[1], CultureInfo.InvariantCulture),
+				X = int.Parse(array2[2], CultureInfo.InvariantCulture),
+				Y = int.Parse(array2[3], CultureInfo.InvariantCulture),
+				Rotation = int.Parse(array2[4], CultureInfo.InvariantCulture),
+				Flipped = int.Parse(array2[5], CultureInfo.InvariantCulture)
 			};
 			contraptionData.items[i] = unit;
 		}

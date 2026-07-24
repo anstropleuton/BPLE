@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using CakeRace;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -662,13 +663,13 @@ public class CakeRaceMenu : WPFMonoBehaviour
 		}
 		else
 		{
-			value = DateTime.Parse(GameProgress.GetString("cake_race_first_day", string.Empty));
+			value = DateTime.Parse(GameProgress.GetString("cake_race_first_day", string.Empty), CultureInfo.InvariantCulture);
 		}
 		serverTime.Subtract(value);
 		DateTime value2 = serverTime;
 		if (GameProgress.HasKey("cake_race_last_played"))
 		{
-			value2 = DateTime.Parse(GameProgress.GetString("cake_race_last_played", DateTime.MinValue.ToShortDateString()));
+			value2 = DateTime.Parse(GameProgress.GetString("cake_race_last_played", DateTime.MinValue.ToShortDateString()), CultureInfo.InvariantCulture);
 		}
 		GameProgress.SetString("cake_race_last_played", serverTime.ToShortDateString());
 		int num = GameProgress.GetInt("cake_race_days_played", 1);

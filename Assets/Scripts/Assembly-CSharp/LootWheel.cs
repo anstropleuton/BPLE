@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -169,7 +170,7 @@ public class LootWheel : WPFMonoBehaviour
 			{
 				if (CustomizationManager.IsPartUnlocked(m_rewards[i].PartReward))
 				{
-					int amount = int.Parse(config[m_rewards[i].PartReward.m_partTier.ToString()]);
+					int amount = int.Parse(config[m_rewards[i].PartReward.m_partTier.ToString()], CultureInfo.InvariantCulture);
 					m_rewards[i] = new LootWheelRewards.LootWheelReward(amount, m_rewards[i].SingleValue, LootWheelRewards.RewardType.Scrap);
 				}
 			}

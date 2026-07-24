@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 public class DailyChallengeProgram
@@ -64,7 +65,7 @@ public class DailyChallengeProgram
 			specialDays = new Dictionary<DateTime, LootCrateType[]>();
 			foreach (object key2 in data.Keys)
 			{
-				DateTime key = new DateTime(long.Parse(key2 as string));
+				DateTime key = new DateTime(long.Parse(key2 as string, CultureInfo.InvariantCulture));
 				ArrayList arrayList = data[key2] as ArrayList;
 				LootCrateType[] array = new LootCrateType[arrayList.Count];
 				for (int i = 0; i < arrayList.Count; i++)
@@ -85,7 +86,7 @@ public class DailyChallengeProgram
 			defaultProgram = new Dictionary<DayOfWeek, LootCrateType[]>();
 			foreach (object key2 in data.Keys)
 			{
-				DayOfWeek key = (DayOfWeek)int.Parse(key2 as string);
+				DayOfWeek key = (DayOfWeek)int.Parse(key2 as string, CultureInfo.InvariantCulture);
 				ArrayList arrayList = data[key2] as ArrayList;
 				LootCrateType[] array = new LootCrateType[arrayList.Count];
 				for (int i = 0; i < arrayList.Count; i++)

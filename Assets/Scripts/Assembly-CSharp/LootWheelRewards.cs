@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 
 public class LootWheelRewards
@@ -63,8 +64,8 @@ public class LootWheelRewards
 
 		public LootWheelReward(string key, ConfigData amounts, ConfigData values, RewardType type)
 		{
-			m_amount = int.Parse(amounts[key]);
-			m_value = int.Parse(values[key]);
+			m_amount = int.Parse(amounts[key], CultureInfo.InvariantCulture);
+			m_value = int.Parse(values[key], CultureInfo.InvariantCulture);
 			m_type = type;
 			m_powerup = LootCrateRewards.Powerup.None;
 			m_part = null;
@@ -72,8 +73,8 @@ public class LootWheelRewards
 
 		public LootWheelReward(string key, ConfigData amounts, ConfigData values, RewardType type, LootCrateRewards.Powerup powerup)
 		{
-			m_amount = int.Parse(amounts[key]);
-			m_value = int.Parse(values[key]);
+			m_amount = int.Parse(amounts[key], CultureInfo.InvariantCulture);
+			m_value = int.Parse(values[key], CultureInfo.InvariantCulture);
 			m_type = type;
 			m_powerup = powerup;
 			m_part = null;
@@ -81,8 +82,8 @@ public class LootWheelRewards
 
 		public LootWheelReward(string key, ConfigData amounts, ConfigData values, RewardType type, BasePart part)
 		{
-			m_amount = int.Parse(amounts[key]);
-			m_value = int.Parse(values[key]);
+			m_amount = int.Parse(amounts[key], CultureInfo.InvariantCulture);
+			m_value = int.Parse(values[key], CultureInfo.InvariantCulture);
 			m_type = type;
 			m_powerup = LootCrateRewards.Powerup.None;
 			m_part = part;
@@ -167,15 +168,15 @@ public class LootWheelRewards
 		m_totalValue = 0;
 		for (int i = 0; i < m_values.Keys.Length; i++)
 		{
-			int num = int.Parse(m_amounts[m_amounts.Keys[i]]);
-			int num2 = int.Parse(m_values[m_values.Keys[i]]);
+			int num = int.Parse(m_amounts[m_amounts.Keys[i]], CultureInfo.InvariantCulture);
+			int num2 = int.Parse(m_values[m_values.Keys[i]], CultureInfo.InvariantCulture);
 			m_totalValue += num * num2;
 		}
 		m_totalInverseValue = 0f;
 		for (int j = 0; j < m_values.Keys.Length; j++)
 		{
-			int num3 = int.Parse(m_amounts[m_amounts.Keys[j]]);
-			int num4 = int.Parse(m_values[m_values.Keys[j]]);
+			int num3 = int.Parse(m_amounts[m_amounts.Keys[j]], CultureInfo.InvariantCulture);
+			int num4 = int.Parse(m_values[m_values.Keys[j]], CultureInfo.InvariantCulture);
 			m_totalInverseValue += (float)m_totalValue / ((float)num3 * (float)num4);
 		}
 		m_rewardValueAvg = (float)m_totalValue / (float)m_values.Count;
@@ -187,8 +188,8 @@ public class LootWheelRewards
 		else
 		{
 			ConfigData config = Singleton<GameConfigurationManager>.Instance.GetConfig("loot_wheel_spin_price_params");
-			m_spinPriceVariation = float.Parse(config["variation_percentage"]);
-			m_spinPriceMultiplier = float.Parse(config["price_multiplier"]);
+			m_spinPriceVariation = float.Parse(config["variation_percentage"], CultureInfo.InvariantCulture);
+			m_spinPriceMultiplier = float.Parse(config["price_multiplier"], CultureInfo.InvariantCulture);
 		}
 		m_initialized = true;
 		if (OnInitialized != null)

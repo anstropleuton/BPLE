@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -174,8 +175,8 @@ public class INSettingsInterface : MonoBehaviour
 		m_saveButton.onClick.AddListener(Save);
 		m_resetButton.onClick.AddListener(Reset);
 		m_settingsGroups = new List<SettingsGroup>();
-		Func<string, int> converter = (string text) => int.Parse(text);
-		Func<string, float> converter2 = (string text) => float.Parse(text);
+		Func<string, int> converter = (string text) => int.Parse(text, CultureInfo.InvariantCulture);
+		Func<string, float> converter2 = (string text) => float.Parse(text, CultureInfo.InvariantCulture);
 		SettingsGroup settingsGroup = GenerateSettingsGroup(0, "PhysicsSettings_Name");
 		GenerateSettingsElementInputField(settingsGroup, 0, "PhysicsSettings_GravityX", () => INUserSettings.Instance.PhysicsSettings.GravityX, delegate(float value)
 		{

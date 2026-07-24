@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using UnityEngine;
 
@@ -297,7 +298,7 @@ public static class LootCrateRewards
 				if (num2 > 0)
 				{
 					string text = (string)Convert.ChangeType(key, typeof(string));
-					T1 item = ((!typeof(T1).IsEnum) ? ((T1)Convert.ChangeType(int.Parse(text), typeof(T1))) : ((T1)Enum.Parse(typeof(T1), text)));
+					T1 item = ((!typeof(T1).IsEnum) ? ((T1)Convert.ChangeType(int.Parse(text, CultureInfo.InvariantCulture), typeof(T1))) : ((T1)Enum.Parse(typeof(T1), text)));
 					list.Add(new Tuple<T1, T2>(item, (T2)Convert.ChangeType(num2 + num, typeof(T2))));
 					num += num2;
 				}

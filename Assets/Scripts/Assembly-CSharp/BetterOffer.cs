@@ -1,3 +1,4 @@
+using System.Globalization;
 using UnityEngine;
 
 public class BetterOffer : MonoBehaviour
@@ -67,7 +68,7 @@ public class BetterOffer : MonoBehaviour
 			string s = ((!string.IsNullOrEmpty(iAPProductInfo.unformattedPrice)) ? iAPProductInfo.unformattedPrice : iAPProductInfo.formattedPrice);
 			try
 			{
-				return float.Parse(s);
+				return float.Parse(s, CultureInfo.InvariantCulture);
 			}
 			catch
 			{

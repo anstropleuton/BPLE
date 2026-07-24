@@ -247,7 +247,7 @@ public class MiniJSON
 					{
 						char[] array = new char[4];
 						Array.Copy(json, index, array, 0, 4);
-						uint utf = uint.Parse(new string(array), NumberStyles.HexNumber);
+						uint utf = uint.Parse(new string(array), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 						text += char.ConvertFromUtf32((int)utf);
 						index += 4;
 						continue;
@@ -275,7 +275,7 @@ public class MiniJSON
 		char[] array = new char[num];
 		Array.Copy(json, index, array, 0, num);
 		index = lastIndexOfNumber + 1;
-		return double.Parse(new string(array));
+		return double.Parse(new string(array), CultureInfo.InvariantCulture);
 	}
 
 	protected static int getLastIndexOfNumber(char[] json, int index)

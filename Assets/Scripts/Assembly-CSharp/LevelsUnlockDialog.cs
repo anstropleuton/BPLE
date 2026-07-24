@@ -1,3 +1,4 @@
+using System.Globalization;
 using UnityEngine;
 
 public class LevelsUnlockDialog : MonoBehaviour
@@ -86,7 +87,7 @@ public class LevelsUnlockDialog : MonoBehaviour
 			}
 			string text = GameProgress.GetMinimumLockedLevel(Singleton<GameManager>.Instance.CurrentEpisodeIndex).ToString();
 			component.text = component.text.Replace("%1", text);
-			string text2 = Mathf.Min(Singleton<GameManager>.Instance.LevelCount - Singleton<GameManager>.Instance.LevelCount / 5, int.Parse(text) + 9).ToString();
+			string text2 = Mathf.Min(Singleton<GameManager>.Instance.LevelCount - Singleton<GameManager>.Instance.LevelCount / 5, int.Parse(text,CultureInfo.InvariantCulture) + 9).ToString();
 			component.text = component.text.Replace("%2", text2);
 			if (text == text2)
 			{
