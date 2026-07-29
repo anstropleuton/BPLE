@@ -208,16 +208,13 @@ public static class Orchestrate
             _ => null,
         };
     }
-    
-    // Source - https://stackoverflow.com/a/3822913
-    // Posted by tboswell, modified by community. See post 'Timeline' for change history
-    // Retrieved 2026-07-23, License - CC BY-SA 4.0
-    static void CopyFilesRecursively(string sourcePath, string targetPath)
-    {
-        foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
-            Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
 
-        foreach (string newPath in Directory.GetFiles(sourcePath, "*.*",SearchOption.AllDirectories))
-            File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+    static void CopyFilesRecursively(string source, string dest)
+    {
+        foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+            Directory.CreateDirectory(Path.Combine(dest, Path.GetRelativePath(source, dirPath)));
+
+        foreach (var filePath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
+            File.Copy(filePath, Path.Combine(dest, Path.GetRelativePath(source, filePath)), true);
     }
 }
