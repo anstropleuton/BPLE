@@ -233,11 +233,12 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
         foreach (var filePath in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
         {
             if (filePath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
-            File.Copy(filePath, Path.Combine(dest, Path.GetRelativePath(source, filePath)), true);
+            var destFilePath = Path.Combine(dest, Path.GetRelativePath(source, filePath));
+            File.Copy(filePath, destFilePath, true);
 
-            if (Path.GetExtension(filePath) == ".x86_64")
+            if (Path.GetExtension(destFilePath) == ".x86_64")
             {
-                File.SetUnixFileMode(filePath,
+                File.SetUnixFileMode(destFilePath,
                     UnixFileMode.UserRead | UnixFileMode.GroupRead | UnixFileMode.OtherRead |
                     UnixFileMode.UserWrite |
                     UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute
