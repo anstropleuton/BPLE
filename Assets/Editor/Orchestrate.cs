@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -126,19 +125,28 @@ public static class Orchestrate
 
         string[] scenes = EditorBuildSettings.scenes.Select(scene => scene.path).ToArray();
         if (scenes.Length == 0)
-            throw new Exception($"No scenes in build settings");
+            throw new Exception("No scenes in build settings");
+
+        BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(target);
 
         BuildPlayerOptions options = new BuildPlayerOptions()
         {
             scenes = scenes,
             locationPathName = Path.Combine(targetPath, GetBinary(target)),
             target = target,
-            targetGroup = BuildPipeline.GetBuildTargetGroup(target),
+            targetGroup = targetGroup,
         };
 
+        BuildTarget previousTarget = EditorUserBuildSettings.activeBuildTarget;
+
+        EditorUserBuildSettings.SwitchActiveBuildTarget(targetGroup, target);
+        
         BuildReport report = BuildPipeline.BuildPlayer(options);
         if (report.summary.result != BuildResult.Succeeded)
             throw new Exception($"Build failed with errors: {report.summary.totalErrors}");
+
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildPipeline.GetBuildTargetGroup(previousTarget),
+            previousTarget);
 
         Debug.Log($"Built game: {targetPath}");
         
