@@ -63,6 +63,7 @@ var nfpmArchivePath = Path.Combine(tempPath, "nfpm.tar.gz");
 if (!File.Exists(nfpmArchivePath))
 {
     var nfpmUrl = "https://github.com/goreleaser/nfpm/releases/download/v2.47.0/nfpm_2.47.0_Linux_x86_64.tar.gz";
+    Console.WriteLine($"Downloading {nfpmUrl}");
     DownloadFile(nfpmUrl, nfpmArchivePath);
 }
 
@@ -83,6 +84,7 @@ var aitPath = Path.Combine(tempPath, "ait.AppImage");
 if (!File.Exists(aitPath))
 {
     var aitUrl = "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage";
+    Console.WriteLine($"Downloading {aitPath}");
     DownloadFile(aitUrl, aitPath, true);
 }
 
@@ -114,6 +116,7 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
     // Tar.gz
     var buildTar = Path.Combine(publishPath, $"BPLE-{buildVersion}-linux-{buildArchitecture}.tar.gz");
     if (File.Exists(buildTar)) File.Delete(buildTar);
+    Console.WriteLine($"Building {buildTar}");
 
     using (var fileStream = File.Create(buildTar))
     using (var gzipStream = new GZipStream(fileStream, CompressionMode.Compress))
@@ -164,6 +167,7 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
              ])
     {
         var targetPath = Path.Combine(publishPath, $"BPLE-{buildVersion}-linux-{buildArchitecture}.{extension}");
+        Console.WriteLine($"Building {targetPath}");
         using var process = Process.Start(new ProcessStartInfo
         {
             FileName = nfpmBinPath,
@@ -179,6 +183,9 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
     }
 
     // AppImage
+    var buildAi = Path.Combine(publishPath, $"BPLE-{buildVersion}-linux-{buildArchitecture}.AppImage");
+    Console.WriteLine($"Building {buildAi}");
+    
     var aitDirPath = Path.Combine(tempPath, $"bple-{buildVersion}.AppDir");
     if (Directory.Exists(aitDirPath)) Directory.Delete(aitDirPath, true);
 
@@ -192,8 +199,6 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
     CopyTo(icon256Path, Path.Combine(aitDirPath, ".DirIcon"));
     CopyTo(icon512Path,
         Path.Combine(aitDirPath, "usr", "share", "icons", "hicolor", "512x512", "apps", $"BPLE-{buildVersion}.png"));
-
-    var buildAi = Path.Combine(publishPath, $"BPLE-{buildVersion}-linux-{buildArchitecture}.AppImage");
 
     using (var process = Process.Start(new ProcessStartInfo
            {

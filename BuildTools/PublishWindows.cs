@@ -80,11 +80,13 @@ foreach (var currentBuild in (string[])["StandaloneWindows", "StandaloneWindows6
     // Zip
     var buildZip = Path.Combine(publishPath, $"BPLE-{buildVersion}-windows-{buildArchitecture}.zip");
     if (File.Exists(buildZip)) File.Delete(buildZip);
+    Console.WriteLine($"Building {buildZip}");
     ZipFile.CreateFromDirectory(stagingPath, buildZip);
 
     // Installer
     var buildMsi = Path.Combine(publishPath, $"BPLE-{buildVersion}-windows-{buildArchitecture}-setup.msi");
     if (File.Exists(buildMsi)) File.Delete(buildMsi);
+    Console.WriteLine($"Building {buildMsi}");
 
     var buildHash = MD5.HashData(Encoding.UTF8.GetBytes($"BPLE-{buildVersion}-{currentBuild}"));
     
