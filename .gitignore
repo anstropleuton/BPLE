@@ -109,6 +109,7 @@ InitTestScene*.unity*
 
 # Streaming assets completely gone
 /[Aa]ssets/StreamingAssets/
+/[Aa]ssets/StreamingAssets.meta
 
 # Editor files
 /.vscode/
