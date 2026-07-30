@@ -343,19 +343,19 @@ public class Bundle : MonoBehaviour
 
 	private static string GetBundleLocation(string bundleFileName)
 	{
-        string fileNameLower = bundleFileName.ToLowerInvariant();
+		string fileNameLower = bundleFileName.ToLowerInvariant();
 #if UNITY_EDITOR
-        string folderName = EditorUserBuildSettings.activeBuildTarget switch
-        {
-            BuildTarget.StandaloneWindows64 or BuildTarget.StandaloneWindows => "Windows",
-            BuildTarget.StandaloneLinux64 => "Linux",
-            BuildTarget.Android => "Android",
-            _ => null,
-        };
+		string folderName = EditorUserBuildSettings.activeBuildTarget switch
+		{
+			BuildTarget.StandaloneWindows64 or BuildTarget.StandaloneWindows => "Windows",
+			BuildTarget.StandaloneLinux64 => "Linux",
+			BuildTarget.Android => "Android",
+			_ => null,
+		};
 
-        return Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), "Library", "BuiltAssetBundles", folderName, fileNameLower);
+		return Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), "Library", "BuiltAssetBundles", folderName, fileNameLower);
 #else
-        return Path.Combine(Application.streamingAssetsPath, "AssetBundles", fileNameLower);
+		return Path.Combine(Application.streamingAssetsPath, "AssetBundles", fileNameLower);
 #endif
 	}
 }
