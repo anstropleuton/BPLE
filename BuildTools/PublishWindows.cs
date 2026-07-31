@@ -189,7 +189,7 @@ foreach (var currentBuild in (string[])["StandaloneWindows", "StandaloneWindows6
 		  Name: "{autodesktop}\BPLE {{buildVersion}}"; Filename: "{app}\BPLE-{{buildVersion}}.exe"; Tasks: desktopicon
 		  
 		  [Tasks]
-		  Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Components: main
+		  Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"
 		  """);
 
 	using (var process = Process.Start(new ProcessStartInfo
