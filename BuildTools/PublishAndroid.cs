@@ -26,7 +26,7 @@ var buildVersion = File.ReadLines(psPath)
 
 var publishPath = Path.Combine(Directory.GetCurrentDirectory(), "Builds", "Publish");
 
-foreach (var currentBuild in (string[])["StandaloneLinux64"])
+foreach (var currentBuild in (string[])["Android"])
 {
 	var buildPath = Path.Combine(Directory.GetCurrentDirectory(), "Builds", currentBuild);
 
