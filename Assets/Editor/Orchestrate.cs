@@ -240,9 +240,9 @@ public static class Orchestrate
 			target = target
 		};
 
-		// BuildReport report = BuildPipeline.BuildPlayer(options);
-		// if (report.summary.result != BuildResult.Succeeded)
-		// 	throw new Exception($"Build failed with errors: {report.summary.totalErrors}");
+		BuildReport report = BuildPipeline.BuildPlayer(options);
+		if (report.summary.result != BuildResult.Succeeded)
+			throw new Exception($"Build failed with errors: {report.summary.totalErrors}");
 
 		Debug.Log($"Built game: {options.locationPathName}");
 
