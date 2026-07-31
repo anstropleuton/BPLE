@@ -111,7 +111,29 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
 	if (Directory.Exists(stagingPath)) Directory.Delete(stagingPath, true);
 	Directory.CreateDirectory(stagingPath);
 
-	CopyForStaging(buildPath, stagingPath);
+	Directory.CreateDirectory(stagingPath);
+
+	foreach (var dirPath in Directory.GetDirectories(buildPath, "*", SearchOption.AllDirectories))
+	{
+		if (dirPath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
+		Directory.CreateDirectory(Path.Combine(stagingPath, Path.GetRelativePath(buildPath, dirPath)));
+	}
+
+	foreach (var filePath in Directory.GetFiles(buildPath, "*", SearchOption.AllDirectories))
+	{
+		if (filePath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
+		var destFilePath = Path.Combine(stagingPath, Path.GetRelativePath(buildPath, filePath));
+		File.Copy(filePath, destFilePath, true);
+
+		if (Path.GetExtension(destFilePath) == ".x86_64")
+		{
+			File.SetUnixFileMode(destFilePath,
+				UnixFileMode.UserRead | UnixFileMode.GroupRead | UnixFileMode.OtherRead |
+				UnixFileMode.UserWrite |
+				UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute
+			);
+		}
+	}
 
 	// Tar.gz
 	var buildTar = Path.Combine(publishPath, $"BPLE-{buildVersion}-linux-{buildArchitecture}.tar.gz");
@@ -225,33 +247,6 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
 	}
 
 	continue;
-
-	void CopyForStaging(string source, string dest)
-	{
-		Directory.CreateDirectory(dest);
-
-		foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
-		{
-			if (dirPath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
-			Directory.CreateDirectory(Path.Combine(dest, Path.GetRelativePath(source, dirPath)));
-		}
-
-		foreach (var filePath in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
-		{
-			if (filePath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
-			var destFilePath = Path.Combine(dest, Path.GetRelativePath(source, filePath));
-			File.Copy(filePath, destFilePath, true);
-
-			if (Path.GetExtension(destFilePath) == ".x86_64")
-			{
-				File.SetUnixFileMode(destFilePath,
-					UnixFileMode.UserRead | UnixFileMode.GroupRead | UnixFileMode.OtherRead |
-					UnixFileMode.UserWrite |
-					UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute
-				);
-			}
-		}
-	}
 
 	void CopyFilesRecursively(string source, string dest)
 	{

@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO.Compression;
 using ImageMagick;
 
-if (!OperatingSystem.IsLinux())
+if (!OperatingSystem.IsWindows())
 {
-	Console.WriteLine("This script should be ran on Linux");
+	Console.WriteLine("This script should be ran on Windows");
 	return;
 }
 
@@ -118,7 +118,27 @@ foreach (var currentBuild in (string[])["StandaloneWindows", "StandaloneWindows6
 	if (Directory.Exists(stagingPath)) Directory.Delete(stagingPath, true);
 	Directory.CreateDirectory(stagingPath);
 
-	CopyForStaging(buildPath, stagingPath);
+	foreach (var dirPath in Directory.GetDirectories(buildPath, "*", SearchOption.AllDirectories))
+	{
+		if (dirPath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
+		Directory.CreateDirectory(Path.Combine(stagingPath, Path.GetRelativePath(buildPath, dirPath)));
+	}
+
+	foreach (var filePath in Directory.GetFiles(buildPath, "*", SearchOption.AllDirectories))
+	{
+		if (filePath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
+		var destFilePath = Path.Combine(stagingPath, Path.GetRelativePath(buildPath, filePath));
+		File.Copy(filePath, destFilePath, true);
+
+		if (Path.GetExtension(destFilePath) == ".x86_64")
+		{
+			File.SetUnixFileMode(destFilePath,
+				UnixFileMode.UserRead | UnixFileMode.GroupRead | UnixFileMode.OtherRead |
+				UnixFileMode.UserWrite |
+				UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute
+			);
+		}
+	}
 
 	// Zip
 	var buildZip = Path.Combine(publishPath, $"BPLE-{buildVersion}-windows-{buildArchitecture}.zip");
@@ -144,6 +164,7 @@ foreach (var currentBuild in (string[])["StandaloneWindows", "StandaloneWindows6
 		  AppId=BPLE-{{buildVersion}}
 		  AppName=BPLE {{buildVersion}}
 		  AppVersion={{buildVersion}}
+		  AppVerName=BPLE {{buildVersion}}
 		  AppPublisher=Anstro Pleuton
 		  AppComments=BPLE is a modification of the game Bad Piggies.
 
@@ -175,6 +196,9 @@ foreach (var currentBuild in (string[])["StandaloneWindows", "StandaloneWindows6
 		  Name: "{group}\BPLE {{buildVersion}}"; Filename: "{app}\BPLE-{{buildVersion}}.exe"
 		  Name: "{group}\Uninstall BPLE {{buildVersion}}"; Filename: "{uninstallexe}"
 		  Name: "{autodesktop}\BPLE {{buildVersion}}"; Filename: "{app}\BPLE-{{buildVersion}}.exe"; Tasks: desktopicon
+		  
+		  [Tasks]
+		  Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Components: main
 		  """);
 
 	using (var process = Process.Start(new ProcessStartInfo
@@ -189,34 +213,11 @@ foreach (var currentBuild in (string[])["StandaloneWindows", "StandaloneWindows6
 			Console.WriteLine($"Inno Setup compiler exited with non-zero exit code: {process?.ExitCode}");
 		}
 	}
-
-	continue;
-
-	void CopyForStaging(string source, string dest)
-	{
-		Directory.CreateDirectory(dest);
-
-		foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
-		{
-			if (dirPath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
-
-			var relative = Path.GetRelativePath(source, dirPath);
-			Directory.CreateDirectory(Path.Combine(dest, relative));
-		}
-
-		foreach (var filePath in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
-		{
-			if (filePath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
-
-			var relative = Path.GetRelativePath(source, filePath);
-			File.Copy(filePath, Path.Combine(dest, relative), true);
-		}
-	}
 }
 
 return;
 
-void DownloadFile(string url, string outFile, bool isExecutable = false)
+void DownloadFile(string url, string outFile)
 {
 	using (var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).GetAwaiter().GetResult())
 	{
@@ -225,14 +226,5 @@ void DownloadFile(string url, string outFile, bool isExecutable = false)
 		using var httpStream = response.Content.ReadAsStream();
 		using var fileStream = new FileStream(outFile, FileMode.Create, FileAccess.Write, FileShare.None);
 		httpStream.CopyTo(fileStream);
-	}
-
-	if (isExecutable)
-	{
-		File.SetUnixFileMode(outFile,
-			UnixFileMode.UserRead | UnixFileMode.GroupRead | UnixFileMode.OtherRead |
-			UnixFileMode.UserWrite |
-			UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute
-		);
 	}
 }
