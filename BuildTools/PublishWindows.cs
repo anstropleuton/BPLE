@@ -129,15 +129,6 @@ foreach (var currentBuild in (string[])["StandaloneWindows", "StandaloneWindows6
 		if (filePath.Contains("BackUpThisFolder_ButDontShipItWithYourGame")) continue;
 		var destFilePath = Path.Combine(stagingPath, Path.GetRelativePath(buildPath, filePath));
 		File.Copy(filePath, destFilePath, true);
-
-		if (Path.GetExtension(destFilePath) == ".x86_64")
-		{
-			File.SetUnixFileMode(destFilePath,
-				UnixFileMode.UserRead | UnixFileMode.GroupRead | UnixFileMode.OtherRead |
-				UnixFileMode.UserWrite |
-				UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute
-			);
-		}
 	}
 
 	// Zip
