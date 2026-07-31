@@ -8,7 +8,8 @@ using UnityEngine;
 
 public static class Orchestrate
 {
-	public static readonly string ProjectPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/'));
+	public static readonly string
+		ProjectPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/'));
 
 	public static readonly string SourcePath = Path.Combine(ProjectPath, "Assets", "assetbundles");
 
@@ -55,91 +56,114 @@ public static class Orchestrate
 		File.WriteAllLines(QueuePath, lines.Skip(1));
 	}
 
+	static void ClearQueue()
+	{
+		File.WriteAllLines(QueuePath, new string[] { });
+	}
+
 	// https://discussions.unity.com/t/buildpipeline-buildplayer-wont-load-sysroot-toolchain-packages/826597/6
 	[InitializeOnLoadMethod]
 	static void CheckBuildOnLoad()
 	{
 		BuildTarget? target = NextQueued();
 		if (target == null) return;
-		
-		PopQueue();
 
 		switch (target)
 		{
 			case BuildTarget.StandaloneWindows:
-				EditorApplication.delayCall += ContinueBuildingStandaloneWindows;
+				EditorApplication.delayCall += CompileStandaloneWindows;
 				break;
 			case BuildTarget.StandaloneWindows64:
-				EditorApplication.delayCall += ContinueBuildingStandaloneWindows64;
+				EditorApplication.delayCall += CompileStandaloneWindows64;
 				break;
 			case BuildTarget.StandaloneLinux64:
-				EditorApplication.delayCall += ContinueBuildingStandaloneLinux64;
+				EditorApplication.delayCall += CompileStandaloneLinux64;
 				break;
 			case BuildTarget.Android:
-				EditorApplication.delayCall += ContinueBuildingAndroid;
+				EditorApplication.delayCall += CompileAndroid;
 				break;
 		}
 	}
 
-	static void ContinueBuildingStandaloneWindows()
+	static void CompileStandaloneWindows()
 	{
-		EditorApplication.delayCall -= ContinueBuildingStandaloneWindows;
-		ContinueBuilding(BuildTarget.StandaloneWindows);
+		EditorApplication.delayCall -= CompileStandaloneWindows;
+		CompileTarget(BuildTarget.StandaloneWindows);
+		PopQueue();
+		ProcessQueuedBuilds();
 	}
 
-	static void ContinueBuildingStandaloneWindows64()
+	static void CompileStandaloneWindows64()
 	{
-		EditorApplication.delayCall -= ContinueBuildingStandaloneWindows64;
-		ContinueBuilding(BuildTarget.StandaloneWindows64);
+		EditorApplication.delayCall -= CompileStandaloneWindows64;
+		CompileTarget(BuildTarget.StandaloneWindows64);
+		PopQueue();
+		ProcessQueuedBuilds();
 	}
 
-	static void ContinueBuildingStandaloneLinux64()
+	static void CompileStandaloneLinux64()
 	{
-		EditorApplication.delayCall -= ContinueBuildingStandaloneLinux64;
-		ContinueBuilding(BuildTarget.StandaloneLinux64);
+		EditorApplication.delayCall -= CompileStandaloneLinux64;
+		CompileTarget(BuildTarget.StandaloneLinux64);
+		PopQueue();
+		ProcessQueuedBuilds();
 	}
 
-	static void ContinueBuildingAndroid()
+	static void CompileAndroid()
 	{
-		EditorApplication.delayCall -= ContinueBuildingAndroid;
-		ContinueBuilding(BuildTarget.Android);
+		EditorApplication.delayCall -= CompileAndroid;
+		CompileTarget(BuildTarget.Android);
+		PopQueue();
+		ProcessQueuedBuilds();
 	}
 
 	[MenuItem("BPLE/Build/All")]
 	public static void BuildAll()
 	{
+		ClearQueue();
+
 		foreach (BuildTarget target in BuildTargets)
 		{
-			BuildForTarget(target);
+			BundleForTarget(target);
+			PushQueue(target);
 		}
+
 		ProcessQueuedBuilds();
 	}
 
 	[MenuItem("BPLE/Build/Windows x32")]
 	public static void BuildWindowsX86()
 	{
-		BuildForTarget(BuildTarget.StandaloneWindows);
+		ClearQueue();
+		BundleForTarget(BuildTarget.StandaloneWindows);
+		PushQueue(BuildTarget.StandaloneWindows);
 		ProcessQueuedBuilds();
 	}
 
 	[MenuItem("BPLE/Build/Windows x64")]
 	public static void BuildWindowsX64()
 	{
-		BuildForTarget(BuildTarget.StandaloneWindows64);
+		ClearQueue();
+		BundleForTarget(BuildTarget.StandaloneWindows64);
+		PushQueue(BuildTarget.StandaloneWindows64);
 		ProcessQueuedBuilds();
 	}
 
 	[MenuItem("BPLE/Build/Linux")]
 	public static void BuildLinux()
 	{
-		BuildForTarget(BuildTarget.StandaloneLinux64);
+		ClearQueue();
+		BundleForTarget(BuildTarget.StandaloneLinux64);
+		PushQueue(BuildTarget.StandaloneLinux64);
 		ProcessQueuedBuilds();
 	}
 
 	[MenuItem("BPLE/Build/Android")]
 	public static void BuildAndroid()
 	{
-		BuildForTarget(BuildTarget.Android);
+		ClearQueue();
+		BundleForTarget(BuildTarget.Android);
+		PushQueue(BuildTarget.Android);
 		ProcessQueuedBuilds();
 	}
 
@@ -189,36 +213,17 @@ public static class Orchestrate
 		BuildTarget? target = NextQueued();
 		if (target == null) return;
 
-		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildPipeline.GetBuildTargetGroup(target.Value), target.Value);
+		if (!EditorUserBuildSettings.SwitchActiveBuildTarget(
+			    BuildPipeline.GetBuildTargetGroup(target.Value), target.Value))
+		{
+			ClearQueue();
+			throw new Exception($"Failed to switch active build target to {target}");
+		}
+
+		EditorUtility.RequestScriptReload();
 	}
 
-	static void BuildForTarget(BuildTarget target)
-	{
-		Debug.Log($"Source path: {SourcePath}");
-		Debug.Log($"Cache path: {CachePath}");
-		Debug.Log($"Stream path: {StreamPath}");
-		Debug.Log($"Build path: {BuildPath}");
-
-		Debug.Log($"Building for: {target}");
-
-		string targetPath = Path.Combine(BuildPath, target.ToString());
-		if (Directory.Exists(targetPath)) Directory.Delete(targetPath, true);
-		Directory.CreateDirectory(targetPath);
-
-		BundleForTarget(target);
-
-		if (EditorUserBuildSettings.activeBuildTarget != target)
-		{
-			Debug.Log("Switching platform requires domain reload.");
-			PushQueue(target);
-		}
-		else
-		{
-			ContinueBuilding(target);
-		}
-	}
-
-	static void ContinueBuilding(BuildTarget target)
+	static void CompileTarget(BuildTarget target)
 	{
 		if (Directory.Exists(StreamPath))
 		{
@@ -229,46 +234,49 @@ public static class Orchestrate
 		Directory.CreateDirectory(StreamPath);
 		CopyFilesRecursively(Path.Combine(CachePath, GetAssetFolder(target)), StreamPath);
 
-		string[] scenes = EditorBuildSettings.scenes.Select(scene => scene.path).ToArray();
+		string[] scenes = EditorBuildSettings.scenes
+			.Where(scene => scene.enabled)
+			.Select(scene => scene.path)
+			.ToArray();
+
 		if (scenes.Length == 0)
+		{
+			ClearQueue();
 			throw new Exception("No scenes in build settings");
+		}
+
+		string targetPath = Path.Combine(BuildPath, target.ToString());
+		if (Directory.Exists(targetPath)) Directory.Delete(targetPath, true);
+		Directory.CreateDirectory(targetPath);
 
 		BuildPlayerOptions options = new BuildPlayerOptions
 		{
 			scenes = scenes,
-			locationPathName = Path.Combine(BuildPath, target.ToString(), GetBinary(target)),
+			locationPathName = Path.Combine(targetPath, GetBinary(target)),
 			target = target
 		};
 
 		BuildReport report = BuildPipeline.BuildPlayer(options);
 		if (report.summary.result != BuildResult.Succeeded)
+		{
+			ClearQueue();
 			throw new Exception($"Build failed with errors: {report.summary.totalErrors}");
+		}
 
 		Debug.Log($"Built game: {options.locationPathName}");
 
 		Directory.Delete(StreamPath, true);
 		File.Delete(StreamPath + ".meta");
-
-		ProcessQueuedBuilds();
 	}
 
 	static void BundleForTarget(BuildTarget target)
 	{
-		Debug.Log($"Source path: {SourcePath}");
-		Debug.Log($"Cache path: {CachePath}");
-		Debug.Log($"Stream path: {StreamPath}");
-		Debug.Log($"Build path: {BuildPath}");
-
-		Debug.Log($"Bundling for {target}");
-
 		string targetPath = Path.Combine(CachePath, GetAssetFolder(target));
 		if (Directory.Exists(targetPath))
 		{
 			Debug.Log("Assets already exists. If refreshing is needed, use BPLE > Bundle > Clear");
 			return;
 		}
-
-		Directory.CreateDirectory(targetPath);
 
 		string[] guids = AssetDatabase.FindAssets(string.Empty, new[]
 		{
@@ -285,13 +293,15 @@ public static class Orchestrate
 			if (AssetDatabase.IsValidFolder(path)) continue;
 
 			AssetImporter importer = AssetImporter.GetAtPath(path);
-			importer.name = Path.GetFileName(Path.GetDirectoryName(path));
+			importer.assetBundleName = Path.GetFileName(Path.GetDirectoryName(path));
 
-			Debug.Log($"Imported asset: {importer.name} => {path}");
+			Debug.Log($"Imported asset: {importer.assetBundleName} => {path}");
 		}
 
 		AssetDatabase.RemoveUnusedAssetBundleNames();
 		AssetDatabase.SaveAssets();
+
+		Directory.CreateDirectory(targetPath);
 
 		BuildPipeline.BuildAssetBundles(targetPath, BuildAssetBundleOptions.ChunkBasedCompression, target);
 		Debug.Log($"Built asset bundle: {targetPath}");
