@@ -36,7 +36,7 @@ public class Dessert : OneTimeCollectable
 		EventManager.Send(new DessertCollectedEvent(this));
 	}
 
-	public override void Collect()
+	public override void Collect(bool noSound = false)
 	{
 		if (!collected)
 		{
@@ -44,7 +44,8 @@ public class Dessert : OneTimeCollectable
 			{
 				UnityEngine.Object.Instantiate(collectedEffect, base.transform.position, base.transform.rotation);
 			}
-			Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.dessertCollected);
+			if (!noSound) Singleton<AudioManager>.Instance.Play2dEffect(
+				WPFMonoBehaviour.gameData.commonAudioCollection.dessertCollected);
 			collected = true;
 			DisableGoal();
 			EventManager.Send(default(ObjectiveAchieved));

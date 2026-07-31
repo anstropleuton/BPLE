@@ -58,7 +58,7 @@ public abstract class OneTimeCollectable : WPFMonoBehaviour
 		EventManager.Connect<GameStateChanged>(OnGameStateChanged);
 		if (INSettings.GetBool(INFeature.AutoGetCollections))
 		{
-			Collect();
+			Collect(true);
 		}
 	}
 
@@ -174,7 +174,7 @@ public abstract class OneTimeCollectable : WPFMonoBehaviour
 		}
 	}
 
-	public virtual void Collect()
+	public virtual void Collect(bool noSound = false)
 	{
 		if (!collected)
 		{
@@ -182,7 +182,8 @@ public abstract class OneTimeCollectable : WPFMonoBehaviour
 			{
 				Object.Instantiate(collectedEffect, base.transform.position, base.transform.rotation);
 			}
-			Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.bonusBoxCollected);
+			if (!noSound) Singleton<AudioManager>.Instance.Play2dEffect(
+				WPFMonoBehaviour.gameData.commonAudioCollection.bonusBoxCollected);
 			collected = true;
 			DisableGoal();
 			EventManager.Send(default(ObjectiveAchieved));

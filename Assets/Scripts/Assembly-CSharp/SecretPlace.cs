@@ -20,7 +20,7 @@ public class SecretPlace : OneTimeCollectable
 		}
 	}
 
-	public override void Collect()
+	public override void Collect(bool noSound = false)
 	{
 		if (!collected)
 		{
@@ -28,7 +28,8 @@ public class SecretPlace : OneTimeCollectable
 			{
 				Object.Instantiate(collectedEffect, base.transform.position, base.transform.rotation);
 			}
-			Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.bonusBoxCollected);
+			if (!noSound) Singleton<AudioManager>.Instance.Play2dEffect(
+				WPFMonoBehaviour.gameData.commonAudioCollection.bonusBoxCollected);
 			Singleton<PlayerProgress>.Instance.AddExperience(PlayerProgress.ExperienceType.HiddenSkullFound);
 			if (GameProgress.SecretSkullCount() == GameProgress.MaxSkullCount())
 			{

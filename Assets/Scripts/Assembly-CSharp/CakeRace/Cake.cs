@@ -39,7 +39,7 @@ namespace CakeRace
 			s_cakeCount--;
 		}
 
-		public override void Collect()
+		public override void Collect(bool noSound = false)
 		{
 			if (WPFMonoBehaviour.levelManager.gameState == LevelManager.GameState.Running && !collected)
 			{
@@ -47,7 +47,8 @@ namespace CakeRace
 				{
 					Object.Instantiate(collectedEffect, base.transform.position, base.transform.rotation);
 				}
-				Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.bonusBoxCollected);
+				if (!noSound) Singleton<AudioManager>.Instance.Play2dEffect(
+					WPFMonoBehaviour.gameData.commonAudioCollection.bonusBoxCollected);
 				collected = true;
 				DisableGoal();
 				EventManager.Send(default(ObjectiveAchieved));

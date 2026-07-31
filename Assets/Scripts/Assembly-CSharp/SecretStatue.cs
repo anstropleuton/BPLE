@@ -79,7 +79,7 @@ public class SecretStatue : OneTimeCollectable
 		pls.isEnabled = disable;
 	}
 
-	public override void Collect()
+	public override void Collect(bool noSound = false)
 	{
 		if (!collected)
 		{
@@ -87,7 +87,8 @@ public class SecretStatue : OneTimeCollectable
 			{
 				Object.Instantiate(collectedEffect, base.transform.position, base.transform.rotation);
 			}
-			Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.secretStatueFound);
+			if (!noSound) Singleton<AudioManager>.Instance.Play2dEffect(
+				WPFMonoBehaviour.gameData.commonAudioCollection.secretStatueFound);
 			Singleton<PlayerProgress>.Instance.AddExperience(PlayerProgress.ExperienceType.HiddenStatueFound);
 			if (GameProgress.SecretStatueCount() == GameProgress.MaxStatueCount())
 			{
