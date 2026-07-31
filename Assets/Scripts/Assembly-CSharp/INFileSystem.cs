@@ -41,7 +41,7 @@ public static class INFileSystem
 			}
 			return Path.Combine(text, Application.productName);
 		}
-#elif UNITY_STANDALONE_LINUX
+#elif UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX
 		string home = Environment.GetEnvironmentVariable("HOME");
 		if (string.IsNullOrEmpty(home))
 		{
@@ -101,7 +101,7 @@ public static class INFileSystem
 		}
 
 		return Path.Combine(home, "Documents");
-#elif UNITY_STANDALONE_WIN
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
 		return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Application.productName);
 #else
 		throw new PlatformNotSupportedException("Update INFileSystem.cs to add support for other platform here");
