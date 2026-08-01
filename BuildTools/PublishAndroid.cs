@@ -1,3 +1,5 @@
+#!/usr/bin/env -S dotnet --
+
 // Useless looking script
 
 if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux())
