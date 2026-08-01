@@ -185,7 +185,7 @@ foreach (var currentBuild in (string[])["StandaloneLinux64"])
 
 	foreach (var (package, extension) in ((string, string)[])
 	         [
-		         ("apk", "apk"), ("archlinux", "pkg.tar.zst"), ("deb", "deb"), ("ipk", "ipk"), ("rpm", "rpm")
+		         ("archlinux", "pkg.tar.zst"), ("deb", "deb"), ("rpm", "rpm")
 	         ])
 	{
 		var targetPath = Path.Combine(publishPath, $"BPLE-{buildVersion}-linux-{buildArchitecture}.{extension}");
