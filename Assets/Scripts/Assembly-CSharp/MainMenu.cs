@@ -221,7 +221,7 @@ public class MainMenu : MonoBehaviour
 		bool num = gcButton.GetComponent<Collider>().enabled;
 		if (show)
 		{
-			gcButton.SetActive(DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Ios);
+			gcButton.SetActive(true);
 		}
 		gcButton.GetComponent<Renderer>().enabled = show || Singleton<SocialGameManager>.Instance.Authenticated;
 		gcButton.GetComponent<Collider>().enabled = show || Singleton<SocialGameManager>.Instance.Authenticated;
@@ -235,12 +235,12 @@ public class MainMenu : MonoBehaviour
 		}
 	}
 
-	private void InitButtons(DeviceInfo.DeviceFamily platform)
+	private void InitButtons()
 	{
 		GameObject gameObject = GameObject.Find("HDBadge");
 		if (gameObject != null)
 		{
-			gameObject.SetActive(Singleton<BuildCustomizationLoader>.Instance.IsHDVersion && platform != DeviceInfo.DeviceFamily.Pc);
+			gameObject.SetActive(Singleton<BuildCustomizationLoader>.Instance.IsHDVersion);
 		}
 		if (Singleton<SocialGameManager>.IsInstantiated())
 		{
@@ -267,8 +267,8 @@ public class MainMenu : MonoBehaviour
 		EventManager.Connect<PlayerChangedEvent>(OnPlayerChanged);
 		creditsMenuInstance = UnityEngine.Object.Instantiate(creditsMenu);
 		creditsMenuInstance.SetActive(value: false);
-		InitButtons(DeviceInfo.ActiveDeviceFamily);
-		if (!HatchManager.IsInitialized || DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.WP8)
+		InitButtons();
+		if (!HatchManager.IsInitialized)
 		{
 			Transform obj = mainMenuNode.transform.FindChildRecursively("ToonsTvLayout");
 			Transform transform = obj.Find("ToonsButton");
@@ -446,7 +446,7 @@ public class MainMenu : MonoBehaviour
 
 	public void OpenGameCenter()
 	{
-		if (!isGameHallExitOpened && DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Ios)
+		if (!isGameHallExitOpened)
 		{
 			if (Singleton<SocialGameManager>.Instance.Authenticated)
 			{

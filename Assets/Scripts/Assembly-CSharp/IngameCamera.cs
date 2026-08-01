@@ -260,15 +260,12 @@ public class IngameCamera : WPFMonoBehaviour
 		}
 		if (WPFMonoBehaviour.levelManager.gameState == LevelManager.GameState.Building)
 		{
-			if (!DeviceInfo.UsesTouchInput)
+			if (Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta < 0f && !WPFMonoBehaviour.levelManager.ConstructionUI.IsDragging())
 			{
-				if (Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta < 0f && !WPFMonoBehaviour.levelManager.ConstructionUI.IsDragging())
-				{
-					WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.PreviewWhileBuilding);
-					Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomOut);
-				}
+				WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.PreviewWhileBuilding);
+				Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomOut);
 			}
-			else if (Input.touchCount == 2)
+			if (Input.touchCount == 2)
 			{
 				Touch touch = Input.GetTouch(0);
 				Touch touch2 = Input.GetTouch(1);
@@ -292,14 +289,11 @@ public class IngameCamera : WPFMonoBehaviour
 		{
 			return;
 		}
-		if (!DeviceInfo.UsesTouchInput)
+		if (currentFOV <= (INSettings.GetBool(INFeature.NewCamera) ? Mathf.Min(m_cameraMinZoom, m_cameraBuildZoom) : 9f) && Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta > 0f)
 		{
-			if (currentFOV <= (INSettings.GetBool(INFeature.NewCamera) ? Mathf.Min(m_cameraMinZoom, m_cameraBuildZoom) : 9f) && Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta > 0f)
-			{
-				StopTransitionToPreview();
-				WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.Building);
-				Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomIn);
-			}
+			StopTransitionToPreview();
+			WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.Building);
+			Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomIn);
 		}
 		else if (Input.touchCount == 2 && currentFOV <= (INSettings.GetBool(INFeature.NewCamera) ? Mathf.Min(m_cameraMinZoom, m_cameraBuildZoom) : 10f))
 		{
@@ -910,7 +904,7 @@ public class IngameCamera : WPFMonoBehaviour
 		{
 			return Vector3.zero;
 		}
-		if (!DeviceInfo.UsesTouchInput)
+		if (Input.touchCount == 0)
 		{
 			Vector3 vector = WPFMonoBehaviour.ScreenToZ0(m_panStartPosition) - WPFMonoBehaviour.ScreenToZ0(Input.mousePosition);
 			m_panStartPosition = Input.mousePosition;
@@ -974,7 +968,7 @@ public class IngameCamera : WPFMonoBehaviour
 		{
 			return 0f;
 		}
-		if (DeviceInfo.UsesTouchInput)
+		if (Input.touchCount != 0)
 		{
 			if (Input.touchCount != 2)
 			{
@@ -1032,7 +1026,7 @@ public class IngameCamera : WPFMonoBehaviour
 
 	private void DoPanning()
 	{
-		if (DeviceInfo.UsesTouchInput)
+		if (Input.touchCount != 0)
 		{
 			if (Input.touchCount == 1)
 			{

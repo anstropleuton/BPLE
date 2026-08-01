@@ -283,8 +283,8 @@ public class ConstructionUI : WPFMonoBehaviour
 		int num = 0;
 		int num2 = 0;
 		int num3 = 0;
-		m_useDragOffset = DeviceInfo.UsesTouchInput && !Singleton<BuildCustomizationLoader>.Instance.IsHDVersion;
-		m_allowDragPlacement = !DeviceInfo.UsesTouchInput;
+		m_useDragOffset = false;
+		m_allowDragPlacement = true;
 		foreach (GameObject part in WPFMonoBehaviour.gameData.m_parts)
 		{
 			Transform transform = part.transform;
@@ -976,8 +976,6 @@ public class ConstructionUI : WPFMonoBehaviour
 			return;
 		}
 		GuiManager.Pointer pointer = GuiManager.GetPointer();
-		if (DeviceInfo.UsesTouchInput)
-		{
 			if (Input.touchCount != 0)
 			{
 				TouchPhase phase = Input.GetTouch(0).phase;
@@ -1028,7 +1026,6 @@ public class ConstructionUI : WPFMonoBehaviour
 					}
 				}
 			}
-		}
 		else
 		{
 			if (INSettings.GetBool(INFeature.PartPlacementOperation))
@@ -1094,11 +1091,7 @@ public class ConstructionUI : WPFMonoBehaviour
 			}
 			m_dragStarted = false;
 		}
-		float num = 1f;
-		if (DeviceInfo.UsesTouchInput)
-		{
-			num = ((!m_useDragOffset) ? 10f : 20f);
-		}
+		float num = ((!m_useDragOffset) ? 10f : 20f);
 		if (m_dragStarted && m_draggedElement == -1 && Vector3.Distance(pointer.position, m_dragStartPosition) >= num)
 		{
 			Vector3 vector3 = WPFMonoBehaviour.ScreenToZ0(m_dragStartPosition) - base.transform.position;

@@ -7,8 +7,6 @@ public class SingletonSpawner : MonoBehaviour
 	[Serializable]
 	public class PlatformSingleton
 	{
-		public List<DeviceInfo.DeviceFamily> platforms = new List<DeviceInfo.DeviceFamily>();
-
 		public GameObject singleton;
 	}
 
@@ -61,7 +59,7 @@ public class SingletonSpawner : MonoBehaviour
 	{
 		foreach (PlatformSingleton platformSingleton in m_platformSingletons)
 		{
-			if (platformSingleton.platforms.Contains(DeviceInfo.ActiveDeviceFamily) && !GameObject.Find(platformSingleton.singleton.name))
+			if (!GameObject.Find(platformSingleton.singleton.name))
 			{
 				GameObject obj = UnityEngine.Object.Instantiate(platformSingleton.singleton);
 				obj.name = platformSingleton.singleton.name;

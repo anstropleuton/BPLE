@@ -189,10 +189,7 @@ public class LevelSelector : WPFMonoBehaviour
 		IapManager.onPurchaseSucceeded += HandleIapManageronPurchaseSucceeded;
 		EventManager.Connect<UIEvent>(ReceiveUIEvent);
 		KeyListener.keyReleased += HandleKeyListenerkeyReleased;
-		if (DeviceInfo.IsDesktop)
-		{
-			KeyListener.mouseWheel += HandleKeyListenerMouseWheel;
-		}
+		KeyListener.mouseWheel += HandleKeyListenerMouseWheel;
 	}
 
 	private void HandleKeyListenerkeyReleased(KeyCode obj)
@@ -201,11 +198,11 @@ public class LevelSelector : WPFMonoBehaviour
 		{
 			GoToEpisodeSelection();
 		}
-		else if (DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && obj == KeyCode.RightArrow && m_rightScroll.activeInHierarchy)
+		else if (obj == KeyCode.RightArrow && m_rightScroll.activeInHierarchy)
 		{
 			NextPage();
 		}
-		else if (DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && obj == KeyCode.LeftArrow && m_leftScroll.activeInHierarchy)
+		else if (obj == KeyCode.LeftArrow && m_leftScroll.activeInHierarchy)
 		{
 			PreviousPage();
 		}
@@ -228,10 +225,7 @@ public class LevelSelector : WPFMonoBehaviour
 		IapManager.onPurchaseSucceeded -= HandleIapManageronPurchaseSucceeded;
 		EventManager.Disconnect<UIEvent>(ReceiveUIEvent);
 		KeyListener.keyReleased -= HandleKeyListenerkeyReleased;
-		if (DeviceInfo.IsDesktop)
-		{
-			KeyListener.mouseWheel -= HandleKeyListenerMouseWheel;
-		}
+		KeyListener.mouseWheel -= HandleKeyListenerMouseWheel;
 	}
 
 	private void Awake()
@@ -268,11 +262,8 @@ public class LevelSelector : WPFMonoBehaviour
 		CreateButtons();
 		CreatePageDots();
 		LayoutButtons(m_page);
-		if (DeviceInfo.UsesTouchInput)
-		{
-			m_leftScroll.SetActive(value: false);
-			m_rightScroll.SetActive(value: false);
-		}
+		m_leftScroll.SetActive(value: false);
+		m_rightScroll.SetActive(value: false);
 		if (GameProgress.TotalDessertCount() > 0)
 		{
 			EventManager.Send(new PulseButtonEvent(UIEvent.Type.None));
@@ -654,27 +645,21 @@ public class LevelSelector : WPFMonoBehaviour
 				{
 					UserSettings.SetInt(Singleton<GameManager>.Instance.CurrentSceneName + "_active_page", m_page);
 				}
-				if (!DeviceInfo.UsesTouchInput)
-				{
-					m_rightScroll.SetActive(value: true);
-					m_leftScroll.SetActive(value: true);
-				}
+				m_rightScroll.SetActive(value: true);
+				m_leftScroll.SetActive(value: true);
 			}
-			else if (!DeviceInfo.UsesTouchInput)
+			else
 			{
 				m_rightScroll.SetActive(value: false);
 				m_leftScroll.SetActive(value: false);
 			}
-			if (!DeviceInfo.UsesTouchInput)
+			if (CurrentPage == 0)
 			{
-				if (CurrentPage == 0)
-				{
-					m_leftScroll.SetActive(value: false);
-				}
-				if (CurrentPage == m_pageCount || m_pageCount == 1)
-				{
-					m_rightScroll.SetActive(value: false);
-				}
+				m_leftScroll.SetActive(value: false);
+			}
+			if (CurrentPage == m_pageCount || m_pageCount == 1)
+			{
+				m_rightScroll.SetActive(value: false);
 			}
 		}
 		if (m_isIapOpen || m_isDialogOpen)
@@ -696,7 +681,7 @@ public class LevelSelector : WPFMonoBehaviour
 			float num = vector3.x - vector2.x;
 			m_buttonGrid.transform.localPosition = new Vector3(Mathf.Clamp(m_buttonGrid.transform.localPosition.x + num, m_rightDragLimit, m_leftDragLimit), m_buttonGrid.transform.localPosition.y, m_buttonGrid.transform.localPosition.z);
 			Vector3 vector4 = WPFMonoBehaviour.hudCamera.ScreenToWorldPoint(m_initialInputPos);
-			if (!DeviceInfo.UsesTouchInput && Mathf.Abs(vector3.x - vector4.x) > 0.2f)
+			if (Mathf.Abs(vector3.x - vector4.x) > 0.2f)
 			{
 				m_rightScroll.SetActive(value: false);
 				m_leftScroll.SetActive(value: false);

@@ -35,7 +35,7 @@ public class SplashPlayer : MonoBehaviour
 		string arg;
 		if (!Singleton<BuildCustomizationLoader>.Instance.IsChina)
 		{
-			arg = ((!Singleton<BuildCustomizationLoader>.Instance.IsHDVersion) ? "iPhone" : ((DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Ios && DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.BB10) ? "PC-OSX" : "iPad"));
+			arg = ((!Singleton<BuildCustomizationLoader>.Instance.IsHDVersion) ? "iPhone" : "PC-OSX");
 		}
 		else
 		{

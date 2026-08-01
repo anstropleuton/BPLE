@@ -45,26 +45,7 @@ public class URLManager : Singleton<URLManager>
 
 	private void GenerateURLBaseString()
 	{
-		m_baseURLString = "http://cloud.rovio.com/link/redirect/?";
-		switch (DeviceInfo.ActiveDeviceFamily)
-		{
-		case DeviceInfo.DeviceFamily.Android:
-			m_baseURLString += "d=android";
-			break;
-		case DeviceInfo.DeviceFamily.Pc:
-			m_baseURLString += "d=windows";
-			break;
-		case DeviceInfo.DeviceFamily.Osx:
-			m_baseURLString += "d=osx";
-			break;
-		case DeviceInfo.DeviceFamily.BB10:
-			m_baseURLString += "d=blackberry";
-			break;
-		case DeviceInfo.DeviceFamily.WP8:
-			m_baseURLString += "d=wp8";
-			break;
-		}
-		m_baseURLString += "&p=bps";
+		m_baseURLString = "http://cloud.rovio.com/link/redirect/?p=bps";
 		if (Singleton<BuildCustomizationLoader>.Instance.IsContentLimited)
 		{
 			m_baseURLString += "&a=free";
@@ -85,7 +66,7 @@ public class URLManager : Singleton<URLManager>
 
 	public string MakeProductTarget(string target)
 	{
-		if (Singleton<BuildCustomizationLoader>.Instance.CustomerID != "Rovio" && DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Android)
+		if (Singleton<BuildCustomizationLoader>.Instance.CustomerID != "Rovio")
 		{
 			target = target + "_" + Singleton<BuildCustomizationLoader>.Instance.CustomerID;
 		}
@@ -170,7 +151,7 @@ public class URLManager : Singleton<URLManager>
 			text = ((!Singleton<BuildCustomizationLoader>.Instance.IsContentLimited) ? (text + "badpiggiesfull") : (text + "badpiggiesfree"));
 			break;
 		}
-		if (DeviceInfo.IsDesktop && Screen.fullScreen)
+		if (Screen.fullScreen)
 		{
 			Screen.fullScreen = false;
 		}

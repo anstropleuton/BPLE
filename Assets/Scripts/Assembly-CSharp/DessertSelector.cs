@@ -107,10 +107,7 @@ public class DessertSelector : MonoBehaviour, WidgetListener
 
 	private void Awake()
 	{
-		if (DeviceInfo.IsDesktop)
-		{
-			m_PrizeProbability = m_PrizeProbabilityDesktop;
-		}
+		m_PrizeProbability = m_PrizeProbabilityDesktop;
 		m_scrollList = m_menu.transform.Find("ScrollList").GetComponent<ScrollList>();
 		m_scrollList.SetListener(this);
 		m_hudCam = Singleton<GuiManager>.Instance.FindCamera();

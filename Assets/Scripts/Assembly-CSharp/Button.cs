@@ -202,7 +202,7 @@ public class Button : Widget
 		if (animate)
 		{
 			bool flag = !down && mouseOver;
-			if (DeviceInfo.UsesTouchInput)
+			if (Input.touchCount != 0)
 			{
 				flag = down || mouseOver;
 			}

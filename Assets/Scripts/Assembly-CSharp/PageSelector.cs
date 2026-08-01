@@ -199,27 +199,21 @@ public class PageSelector : MonoBehaviour
 				{
 					UserSettings.SetInt(Singleton<GameManager>.Instance.CurrentSceneName + "_active_page", m_page);
 				}
-				if (!DeviceInfo.UsesTouchInput)
-				{
-					m_rightScroll.SetActive(value: true);
-					m_leftScroll.SetActive(value: true);
-				}
+				m_rightScroll.SetActive(value: true);
+				m_leftScroll.SetActive(value: true);
 			}
-			else if (!DeviceInfo.UsesTouchInput)
+			else
 			{
 				m_rightScroll.SetActive(value: false);
 				m_leftScroll.SetActive(value: false);
 			}
-			if (!DeviceInfo.UsesTouchInput)
+			if (CurrentPage == 0)
 			{
-				if (CurrentPage == 0)
-				{
-					m_leftScroll.SetActive(value: false);
-				}
-				if (CurrentPage == m_pageCount - 1 || m_pageCount == 1)
-				{
-					m_rightScroll.SetActive(value: false);
-				}
+				m_leftScroll.SetActive(value: false);
+			}
+			if (CurrentPage == m_pageCount - 1 || m_pageCount == 1)
+			{
+				m_rightScroll.SetActive(value: false);
 			}
 		}
 		if (LockScrolling)
@@ -241,7 +235,7 @@ public class PageSelector : MonoBehaviour
 			float num2 = vector3.x - vector2.x;
 			m_scrollPivot.transform.localPosition = new Vector3(Mathf.Clamp(m_scrollPivot.transform.localPosition.x + num2, m_rightDragLimit, m_leftDragLimit), m_scrollPivot.transform.localPosition.y, m_scrollPivot.transform.localPosition.z);
 			Vector3 vector4 = m_hudCamera.ScreenToWorldPoint(m_initialInputPos);
-			if (!DeviceInfo.UsesTouchInput && Mathf.Abs(vector3.x - vector4.x) > 0.2f)
+			if (Mathf.Abs(vector3.x - vector4.x) > 0.2f)
 			{
 				m_rightScroll.SetActive(value: false);
 				m_leftScroll.SetActive(value: false);
@@ -358,7 +352,7 @@ public class PageSelector : MonoBehaviour
 		}
 		m_rightDragLimit = 0f - m_hudCamera.ScreenToWorldPoint(new Vector3((float)(Screen.width * m_pageCount) - EdgeMargin, 0f, 0f)).x;
 		m_leftDragLimit = 0f - m_hudCamera.ScreenToWorldPoint(new Vector3(EdgeMargin, 0f, 0f)).x;
-		if (DeviceInfo.UsesTouchInput || m_pageCount <= 1)
+		if (m_pageCount <= 1)
 		{
 			m_leftScroll.SetActive(value: false);
 			m_rightScroll.SetActive(value: false);
@@ -421,11 +415,11 @@ public class PageSelector : MonoBehaviour
 
 	private void HandleKeyListenerkeyReleased(KeyCode obj)
 	{
-		if (DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && obj == KeyCode.RightArrow && m_rightScroll.activeInHierarchy)
+		if (obj == KeyCode.RightArrow && m_rightScroll.activeInHierarchy)
 		{
 			NextPage();
 		}
-		else if (DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && obj == KeyCode.LeftArrow && m_leftScroll.activeInHierarchy)
+		else if (obj == KeyCode.LeftArrow && m_leftScroll.activeInHierarchy)
 		{
 			PreviousPage();
 		}
