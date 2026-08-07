@@ -99,7 +99,7 @@ public class GameProgress : MonoBehaviour
 				path = $"Progress_{m_currentPlayer}.dat";
 				key = string.Format("{0}{1}", m_currentPlayer, "z9dD2wS2,h");
 			}
-			m_data = new SettingsData(Path.Combine(Application.persistentDataPath, path), useEncryption: true, key);
+			m_data = new SettingsData(Path.Combine(INFileSystem.Root, path), useEncryption: true, key);
 			m_data.Load();
 			bool isNewGameProgress = false;
 			if (!m_data.GetBool("GameProgress_initialized", defaultValue: false))

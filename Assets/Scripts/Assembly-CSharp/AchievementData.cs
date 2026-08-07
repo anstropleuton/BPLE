@@ -241,7 +241,7 @@ public class AchievementData : Singleton<AchievementData>
 	private void Awake()
 	{
 		SetAsPersistant();
-		m_fileName = Application.persistentDataPath + "/Achievements.xml";
+		m_fileName = INFileSystem.Root + "/Achievements.xml";
 		m_useEncryption = true;
 		m_crypto = new CryptoUtility("fHHg5#%3RRfnJi78&%lP?65");
 		InitializeAchievementLimits();
