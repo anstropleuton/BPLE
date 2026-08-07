@@ -10,6 +10,7 @@ This repository has been deviated slightly, it also contains several bug fixes a
 - [AssetRipper](https://github.com/AssetRipper/AssetRipper) for Unity project decompilation.
 - [RenderDoc](https://renderdoc.org) for raw shader decompilation.
 - [ChatGPT](https://chatgpt.com) for manual shader reverse engineering.
+- [Bayu Satiyo](https://github.com/kiraio-moe/remove-unity-splash-screen) for splash screen removal tips.
 - [Rovio](https://www.rovio.com) for creating the base game Bad Piggies.
 
 ## How To Build
