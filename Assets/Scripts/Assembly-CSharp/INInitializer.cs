@@ -20,9 +20,48 @@ public class INInitializer : MonoBehaviour
 	private float m_time;
 
 	public bool Initialized => m_initialized;
+	
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern System.IntPtr GetActiveWindow();
+
+    [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+    private static extern int DwmSetWindowAttribute(System.IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+    private const int DWMWA_USE_IMMERSIVE_DARK_MODE_OLD = 19;
+
+    private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+#endif
 
 	private void Awake()
 	{
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+        bool systemIsDark;
+
+        try
+        {
+            object value = Microsoft.Win32.Registry.GetValue(
+                @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+                "AppsUseLightTheme", 1);
+            systemIsDark = value is int i && i == 0;
+        }
+        catch
+        {
+            systemIsDark = false;
+        }
+
+        if (systemIsDark)
+		{
+			System.IntPtr hwnd = GetActiveWindow();
+			int useDark = 1;
+
+			if (DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDark, sizeof(int)) != 0)
+			{
+	            DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE_OLD, ref useDark, sizeof(int));
+	        }
+		}
+#endif
+
 		m_useAlphaAnimation = true;
 		m_time = 1.5f;
 		StartCoroutine(Initialize());
