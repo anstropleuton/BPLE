@@ -8,8 +8,8 @@ using UnityEngine;
 
 public static class Orchestrate
 {
-	public static readonly string
-		ProjectPath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/'));
+	public static readonly string ProjectPath =
+		Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/'));
 
 	public static readonly string SourcePath = Path.Combine(ProjectPath, "Assets", "assetbundles");
 
@@ -21,20 +21,44 @@ public static class Orchestrate
 
 	public static readonly string QueuePath = Path.Combine(ProjectPath, "Temp", "BuildQueue.txt");
 
-	public static readonly List<BuildTarget> BuildTargets = new List<BuildTarget>()
+	public enum Platform
 	{
-		BuildTarget.StandaloneWindows,
-		BuildTarget.StandaloneWindows64,
-		BuildTarget.StandaloneLinux64,
-		BuildTarget.Android
-	};
-
-	static void PushQueue(BuildTarget target)
-	{
-		File.AppendAllText(QueuePath, target.ToString() + "\n");
+		WindowsX32,
+		WindowsX64,
+		LinuxX64,
+		AndroidArm,
+		AndroidIntel
 	}
 
-	static BuildTarget? NextQueued()
+	public static BuildTarget GetTargetFromPlatform(Platform platform)
+	{
+		return platform switch
+		{
+			Platform.WindowsX32 => BuildTarget.StandaloneWindows,
+			Platform.WindowsX64 => BuildTarget.StandaloneWindows64,
+			Platform.LinuxX64 => BuildTarget.StandaloneLinux64,
+			Platform.AndroidArm or Platform.AndroidIntel => BuildTarget.Android,
+			_ => throw new ArgumentOutOfRangeException(nameof(platform), platform, "Unsupported target")
+		};
+	}
+
+	public static string GetBinaryFromPlatform(Platform platform)
+	{
+		return platform switch
+		{
+			Platform.WindowsX32 or Platform.WindowsX64 => $"BPLE-{PlayerSettings.bundleVersion}.exe",
+			Platform.LinuxX64 => $"BPLE-{PlayerSettings.bundleVersion}.x86_64",
+			Platform.AndroidArm or Platform.AndroidIntel => $"BPLE-{PlayerSettings.bundleVersion}.apk",
+			_ => null,
+		};
+	}
+
+	static void PushQueue(Platform platform)
+	{
+		File.AppendAllText(QueuePath, $"{platform}\n");
+	}
+
+	static Platform? NextQueued()
 	{
 		if (!File.Exists(QueuePath)) return null;
 
@@ -42,7 +66,7 @@ public static class Orchestrate
 
 		if (lines.Length == 0) return null;
 
-		return Enum.Parse<BuildTarget>(lines[0]);
+		return Enum.Parse<Platform>(lines[0]);
 	}
 
 	static void PopQueue()
@@ -62,59 +86,22 @@ public static class Orchestrate
 	}
 
 	// https://discussions.unity.com/t/buildpipeline-buildplayer-wont-load-sysroot-toolchain-packages/826597/6
+	private static EditorApplication.CallbackFunction pendingBuild;
+
 	[InitializeOnLoadMethod]
 	static void CheckBuildOnLoad()
 	{
-		BuildTarget? target = NextQueued();
-		if (target == null) return;
+		Platform? platform = NextQueued();
+		if (platform == null) return;
 
-		switch (target)
+		pendingBuild = () =>
 		{
-			case BuildTarget.StandaloneWindows:
-				EditorApplication.delayCall += CompileStandaloneWindows;
-				break;
-			case BuildTarget.StandaloneWindows64:
-				EditorApplication.delayCall += CompileStandaloneWindows64;
-				break;
-			case BuildTarget.StandaloneLinux64:
-				EditorApplication.delayCall += CompileStandaloneLinux64;
-				break;
-			case BuildTarget.Android:
-				EditorApplication.delayCall += CompileAndroid;
-				break;
-		}
-	}
-
-	static void CompileStandaloneWindows()
-	{
-		EditorApplication.delayCall -= CompileStandaloneWindows;
-		CompileTarget(BuildTarget.StandaloneWindows);
-		PopQueue();
-		ProcessQueuedBuilds();
-	}
-
-	static void CompileStandaloneWindows64()
-	{
-		EditorApplication.delayCall -= CompileStandaloneWindows64;
-		CompileTarget(BuildTarget.StandaloneWindows64);
-		PopQueue();
-		ProcessQueuedBuilds();
-	}
-
-	static void CompileStandaloneLinux64()
-	{
-		EditorApplication.delayCall -= CompileStandaloneLinux64;
-		CompileTarget(BuildTarget.StandaloneLinux64);
-		PopQueue();
-		ProcessQueuedBuilds();
-	}
-
-	static void CompileAndroid()
-	{
-		EditorApplication.delayCall -= CompileAndroid;
-		CompileTarget(BuildTarget.Android);
-		PopQueue();
-		ProcessQueuedBuilds();
+			EditorApplication.delayCall -= pendingBuild;
+			BuildForPlatform(platform.Value);
+			PopQueue();
+			ProcessQueuedBuilds();
+		};
+		EditorApplication.delayCall += pendingBuild;
 	}
 
 	[MenuItem("BPLE/Build/All")]
@@ -122,10 +109,10 @@ public static class Orchestrate
 	{
 		ClearQueue();
 
-		foreach (BuildTarget target in BuildTargets)
+		foreach (Platform platform in Enum.GetValues(typeof(Platform)))
 		{
-			BundleForTarget(target);
-			PushQueue(target);
+			BundleForTarget(GetTargetFromPlatform(platform));
+			PushQueue(platform);
 		}
 
 		ProcessQueuedBuilds();
@@ -136,7 +123,7 @@ public static class Orchestrate
 	{
 		ClearQueue();
 		BundleForTarget(BuildTarget.StandaloneWindows);
-		PushQueue(BuildTarget.StandaloneWindows);
+		PushQueue(Platform.WindowsX32);
 		ProcessQueuedBuilds();
 	}
 
@@ -145,39 +132,58 @@ public static class Orchestrate
 	{
 		ClearQueue();
 		BundleForTarget(BuildTarget.StandaloneWindows64);
-		PushQueue(BuildTarget.StandaloneWindows64);
+		PushQueue(Platform.WindowsX64);
 		ProcessQueuedBuilds();
 	}
 
-	[MenuItem("BPLE/Build/Linux")]
+	[MenuItem("BPLE/Build/Linux x64")]
 	public static void BuildLinux()
 	{
 		ClearQueue();
 		BundleForTarget(BuildTarget.StandaloneLinux64);
-		PushQueue(BuildTarget.StandaloneLinux64);
+		PushQueue(Platform.LinuxX64);
 		ProcessQueuedBuilds();
 	}
 
-	[MenuItem("BPLE/Build/Android")]
-	public static void BuildAndroid()
+	[MenuItem("BPLE/Build/Android ARM")]
+	public static void BuildAndroidArm()
 	{
 		ClearQueue();
 		BundleForTarget(BuildTarget.Android);
-		PushQueue(BuildTarget.Android);
+		PushQueue(Platform.AndroidArm);
 		ProcessQueuedBuilds();
+	}
+
+	[MenuItem("BPLE/Build/Android Intel")]
+	public static void BuildAndroidIntel()
+	{
+		ClearQueue();
+		BundleForTarget(BuildTarget.Android);
+		PushQueue(Platform.AndroidIntel);
+		ProcessQueuedBuilds();
+	}
+
+	[MenuItem("BPLE/Build/Clear")]
+	public static void BuildClear()
+	{
+		foreach (Platform platform in Enum.GetValues(typeof(Platform)))
+		{
+			string path = Path.Combine(BuildPath, platform.ToString());
+			if (Directory.Exists(path)) Directory.Delete(path, true);
+		}
 	}
 
 	[MenuItem("BPLE/Bundle/All")]
 	public static void BundleAll()
 	{
-		foreach (BuildTarget target in BuildTargets)
+		foreach (Platform platform in Enum.GetValues(typeof(Platform)))
 		{
-			BundleForTarget(target);
+			BundleForTarget(GetTargetFromPlatform(platform));
 		}
 	}
 
 	[MenuItem("BPLE/Bundle/Windows x32")]
-	public static void BundleWindowsX86()
+	public static void BundleWindowsX32()
 	{
 		BundleForTarget(BuildTarget.StandaloneWindows);
 	}
@@ -188,8 +194,8 @@ public static class Orchestrate
 		BundleForTarget(BuildTarget.StandaloneWindows64);
 	}
 
-	[MenuItem("BPLE/Bundle/Linux")]
-	public static void BundleLinux()
+	[MenuItem("BPLE/Bundle/Linux x64")]
+	public static void BundleLinuxX64()
 	{
 		BundleForTarget(BuildTarget.StandaloneLinux64);
 	}
@@ -203,18 +209,19 @@ public static class Orchestrate
 	[MenuItem("BPLE/Bundle/Clear")]
 	public static void BundleClear()
 	{
-		Directory.Delete(CachePath, true);
-		Directory.Delete(StreamPath, true);
-		File.Delete(StreamPath + ".meta");
+		if (Directory.Exists(CachePath)) Directory.Delete(CachePath, true);
+		if (Directory.Exists(StreamPath)) Directory.Delete(StreamPath, true);
+		if (File.Exists(StreamPath + ".meta")) File.Delete(StreamPath + ".meta");
 	}
 
 	static void ProcessQueuedBuilds()
 	{
-		BuildTarget? target = NextQueued();
-		if (target == null) return;
+		Platform? platform = NextQueued();
+		if (platform == null) return;
 
-		if (!EditorUserBuildSettings.SwitchActiveBuildTarget(
-			    BuildPipeline.GetBuildTargetGroup(target.Value), target.Value))
+		BuildTarget target = GetTargetFromPlatform(platform.Value);
+
+		if (!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildPipeline.GetBuildTargetGroup(target), target))
 		{
 			ClearQueue();
 			throw new Exception($"Failed to switch active build target to {target}");
@@ -223,7 +230,7 @@ public static class Orchestrate
 		EditorUtility.RequestScriptReload();
 	}
 
-	static void CompileTarget(BuildTarget target)
+	static void BuildForPlatform(Platform platform)
 	{
 		if (Directory.Exists(StreamPath))
 		{
@@ -231,8 +238,10 @@ public static class Orchestrate
 			File.Delete(StreamPath + ".meta");
 		}
 
+		BuildTarget target = GetTargetFromPlatform(platform);
+
 		Directory.CreateDirectory(StreamPath);
-		CopyFilesRecursively(Path.Combine(CachePath, GetAssetFolder(target)), StreamPath);
+		CopyFilesRecursively(Path.Combine(CachePath, target.ToString()), StreamPath);
 
 		string[] scenes = EditorBuildSettings.scenes
 			.Where(scene => scene.enabled)
@@ -245,22 +254,32 @@ public static class Orchestrate
 			throw new Exception("No scenes in build settings");
 		}
 
-		string targetPath = Path.Combine(BuildPath, target.ToString());
+		string targetPath = Path.Combine(BuildPath, platform.ToString());
 		if (Directory.Exists(targetPath)) Directory.Delete(targetPath, true);
 		Directory.CreateDirectory(targetPath);
 
 		BuildPlayerOptions options = new BuildPlayerOptions
 		{
 			scenes = scenes,
-			locationPathName = Path.Combine(targetPath, GetBinary(target)),
+			locationPathName = Path.Combine(targetPath, GetBinaryFromPlatform(platform)),
 			target = target
 		};
+
+		switch (platform)
+		{
+			case Platform.AndroidArm:
+				PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64;
+				break;
+			case Platform.AndroidIntel:
+				PlayerSettings.Android.targetArchitectures = AndroidArchitecture.X86 | AndroidArchitecture.X86_64;
+				break;
+		}
 
 		BuildReport report = BuildPipeline.BuildPlayer(options);
 		if (report.summary.result != BuildResult.Succeeded)
 		{
 			ClearQueue();
-			throw new Exception($"Build failed with errors: {report.summary.totalErrors}");
+			throw new Exception($"Build failed with errors: {report.summary.totalErrors}:\n{report.steps}");
 		}
 
 		Debug.Log($"Built game: {options.locationPathName}");
@@ -271,7 +290,7 @@ public static class Orchestrate
 
 	static void BundleForTarget(BuildTarget target)
 	{
-		string targetPath = Path.Combine(CachePath, GetAssetFolder(target));
+		string targetPath = Path.Combine(CachePath, target.ToString());
 		if (Directory.Exists(targetPath))
 		{
 			Debug.Log("Assets already exists. If refreshing is needed, use BPLE > Bundle > Clear");
@@ -305,28 +324,6 @@ public static class Orchestrate
 
 		BuildPipeline.BuildAssetBundles(targetPath, BuildAssetBundleOptions.ChunkBasedCompression, target);
 		Debug.Log($"Built asset bundle: {targetPath}");
-	}
-
-	static string GetAssetFolder(BuildTarget target)
-	{
-		return target switch
-		{
-			BuildTarget.StandaloneWindows64 or BuildTarget.StandaloneWindows => "Windows",
-			BuildTarget.StandaloneLinux64 => "Linux",
-			BuildTarget.Android => "Android",
-			_ => null,
-		};
-	}
-
-	static string GetBinary(BuildTarget target)
-	{
-		return target switch
-		{
-			BuildTarget.StandaloneWindows64 or BuildTarget.StandaloneWindows => $"BPLE-{Application.version}.exe",
-			BuildTarget.StandaloneLinux64 => $"BPLE-{Application.version}.x86_64",
-			BuildTarget.Android => $"BPLE-{Application.version}.apk",
-			_ => null,
-		};
 	}
 
 	static void CopyFilesRecursively(string source, string dest)
