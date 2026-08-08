@@ -9,6 +9,8 @@ public static class INFileSystem
 {
 	private static string m_root;
 
+	private static readonly string m_dirName = "新创Unity";
+
 	public static string Root
 	{
 		get
@@ -39,7 +41,7 @@ public static class INFileSystem
 			{
 				return string.Empty;
 			}
-			return Path.Combine(text, Application.productName);
+			return Path.Combine(text, m_dirName);
 		}
 #elif UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX
 		string home = Environment.GetEnvironmentVariable("HOME");
@@ -73,7 +75,7 @@ public static class INFileSystem
 				string path = output.Trim();
 				if (!string.IsNullOrEmpty(path))
 				{
-					return path;
+					return Path.Combine(path, m_dirName);
 				}
 			}
 		}
@@ -95,14 +97,14 @@ public static class INFileSystem
 				Match match = Regex.Match(line, @"^XDG_DOCUMENTS_DIR\s*=\s*""(.*)""\s*$");
 				if (match.Success)
 				{
-					return match.Groups[1].Value.Replace("$HOME", home);
+					return Path.Combine(match.Groups[1].Value.Replace("$HOME", home), m_dirName);
 				}
 			}
 		}
 
-		return Path.Combine(home, "Documents");
+		return Path.Combine(home, "Documents", m_dirName);
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-		return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Application.productName);
+		return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), m_dirName);
 #else
 		throw new PlatformNotSupportedException("Update INFileSystem.cs to add support for other platform here");
 #endif

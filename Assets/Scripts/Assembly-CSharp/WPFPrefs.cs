@@ -11,7 +11,7 @@ public class WPFPrefs : UnityEngine.Object
 	public static void WriteGhostPlayerData(string filename, GhostPlayer gp)
 	{
 		XmlSerializer xmlSerializer = new XmlSerializer(typeof(GhostPlayer));
-		FileStream fileStream = new FileStream(Application.persistentDataPath + "/" + filename, FileMode.Create);
+		FileStream fileStream = new FileStream(INFileSystem.Root + "/" + filename, FileMode.Create);
 		xmlSerializer.Serialize(fileStream, gp);
 		fileStream.Close();
 	}
@@ -22,7 +22,7 @@ public class WPFPrefs : UnityEngine.Object
 		GhostPlayer result = new GhostPlayer();
 		try
 		{
-			FileStream fileStream = new FileStream(Application.persistentDataPath + "/" + filename, FileMode.Open);
+			FileStream fileStream = new FileStream(INFileSystem.Root + "/" + filename, FileMode.Open);
 			result = xmlSerializer.Deserialize(fileStream) as GhostPlayer;
 			fileStream.Close();
 		}

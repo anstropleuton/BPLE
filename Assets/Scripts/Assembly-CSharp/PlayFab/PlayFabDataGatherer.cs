@@ -74,7 +74,7 @@ namespace PlayFab
 			GraphicsMultiThreaded = SystemInfo.graphicsMultiThreaded;
 			GraphicsType = SystemInfo.graphicsDeviceType;
 			DataPath = Application.dataPath;
-			PersistentDataPath = Application.persistentDataPath;
+			PersistentDataPath = INFileSystem.Root;
 			StreamingAssetsPath = Application.streamingAssetsPath;
 			TargetFrameRate = Application.targetFrameRate;
 			UnityVersion = Application.unityVersion;

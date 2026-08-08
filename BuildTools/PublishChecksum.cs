@@ -1,4 +1,7 @@
 #!/usr/bin/env -S dotnet --
+#:package AssetsTools.NET@3.0.5
+
+#:include Common.cs
 
 using System.Security.Cryptography;
 
@@ -8,33 +11,18 @@ if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux())
 	return;
 }
 
-if (Path.GetFileName(Directory.GetCurrentDirectory()) == "BuildTools")
+if (!Common.Initialize())
 {
-	Directory.SetCurrentDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory())!);
-}
-
-if (Path.GetFileName(Directory.GetCurrentDirectory()) != "BPLE")
-{
-	Console.WriteLine("The script must be ran in BPLE directory");
 	return;
 }
 
-var publishPath = Path.Combine(Directory.GetCurrentDirectory(), "Builds", "Publish");
-
-var psPath = Path.Combine(Directory.GetCurrentDirectory(), "ProjectSettings", "ProjectSettings.asset");
-
-var buildVersion = File.ReadLines(psPath)
-	.FirstOrDefault(line => line.Contains("bundleVersion"))!
-	.Split(':', 2)[1]
-	.Trim();
-
-var checksumPath = Path.Combine(publishPath, $"BPLE-{buildVersion}-checksum.txt");
+var checksumPath = Path.Combine(Common.PublishPath, $"BPLE-{Common.BuildVersion}-checksum.txt");
 var verifierSourcePath = Path.Combine(Directory.GetCurrentDirectory(), "BuildTools", "VerifyChecksum.cs");
-var verifierDestPath = Path.Combine(publishPath, $"BPLE-{buildVersion}-VerifyChecksum.cs");
+var verifierDestPath = Path.Combine(Common.PublishPath, $"BPLE-{Common.BuildVersion}-VerifyChecksum.cs");
 
 using var writer = new StreamWriter(checksumPath);
 
-foreach (var file in Directory.GetFiles(publishPath, "BPLE-*")
+foreach (var file in Directory.GetFiles(Common.PublishPath, "BPLE-*")
 	         .Where(path => !path.Contains(".txt") && !path.Contains(".cs")))
 {
 	using var stream = File.OpenRead(file);

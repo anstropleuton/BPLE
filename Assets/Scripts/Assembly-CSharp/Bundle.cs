@@ -345,13 +345,7 @@ public class Bundle : MonoBehaviour
 	{
 		string fileNameLower = bundleFileName.ToLowerInvariant();
 #if UNITY_EDITOR
-		string folderName = EditorUserBuildSettings.activeBuildTarget switch
-		{
-			BuildTarget.StandaloneWindows64 or BuildTarget.StandaloneWindows => "Windows",
-			BuildTarget.StandaloneLinux64 => "Linux",
-			BuildTarget.Android => "Android",
-			_ => null,
-		};
+		string folderName = EditorUserBuildSettings.activeBuildTarget.ToString();
 
 		return Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), "Library", "BuiltAssetBundles", folderName, fileNameLower);
 #else

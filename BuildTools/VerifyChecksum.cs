@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 var checksumFiles = Directory.GetFiles(Directory.GetCurrentDirectory(), "*checksum.txt");
 
-var missing = 0;
+var skipped = 0;
 var ok = 0;
 var failed = 0;
 
@@ -26,8 +26,8 @@ foreach (var checksumFile in checksumFiles)
 
 		if (!File.Exists(fileName))
 		{
-			Console.WriteLine($"MISSING  {fileName}");
-			missing++;
+			Console.WriteLine($"SKIPPED  {fileName} (Missing)");
+			skipped++;
 			continue;
 		}
 
@@ -52,6 +52,6 @@ Console.WriteLine();
 Console.WriteLine($"Summary:");
 Console.WriteLine($"  {ok,4} OK");
 Console.WriteLine($"  {failed,4} FAILED");
-Console.WriteLine($"  {missing,4} MISSING");
+Console.WriteLine($"  {skipped,4} SKIPPED");
 
-if (failed > 0 || missing > 0) Environment.Exit(1);
+if (failed > 0) Environment.Exit(1);

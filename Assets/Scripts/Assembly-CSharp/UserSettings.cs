@@ -6,7 +6,7 @@ public class UserSettings : MonoBehaviour
 
 	private void Awake()
 	{
-		m_data = new SettingsData(Application.persistentDataPath + "/Settings.xml", useEncryption: false, string.Empty);
+		m_data = new SettingsData(INFileSystem.Root + "/Settings.xml", useEncryption: false, string.Empty);
 		m_data.Load();
 		Object.DontDestroyOnLoad(this);
 	}
