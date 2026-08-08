@@ -12,9 +12,9 @@ public static class ConvertExtensions
 
 		public PartTypeConverter()
 		{
-			m_partTypeTable = new BasePart.PartType[48];
-			m_sortedPartTypeTable = new SortedPartType[50];
-			for (int i = 0; i < 48; i++)
+			m_partTypeTable = new BasePart.PartType[(int)SortedPartType.MAX];
+			m_sortedPartTypeTable = new SortedPartType[(int)BasePart.PartType.MAX];
+			for (int i = 0; i < (int)SortedPartType.MAX; i++)
 			{
 				SortedPartType sortedPartType = (SortedPartType)i;
 				if (!Enum.TryParse<BasePart.PartType>(sortedPartType.ToString(), out var result))
@@ -23,7 +23,7 @@ public static class ConvertExtensions
 				}
 				m_partTypeTable[i] = result;
 			}
-			for (int j = 0; j < 50; j++)
+			for (int j = 0; j < (int)BasePart.PartType.MAX; j++)
 			{
 				BasePart.PartType partType = (BasePart.PartType)j;
 				if (!Enum.TryParse<SortedPartType>(partType.ToString(), out var result2))

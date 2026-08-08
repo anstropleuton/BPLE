@@ -684,7 +684,7 @@ public class PartListing : Widget
 	private void ReadPartOrder()
 	{
 		partOrder = new List<BasePart.PartType>();
-		for (int i = 0; i < 48; i++)
+		for (int i = 0; i < (int)SortedPartType.MAX; i++)
 		{
 			SortedPartType sortedPartType = (SortedPartType)i;
 			if (sortedPartType.IsValid())

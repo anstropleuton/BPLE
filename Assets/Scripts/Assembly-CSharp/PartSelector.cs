@@ -224,7 +224,7 @@ public class PartSelector : WPFMonoBehaviour, WidgetListener
 	private void ReadPartOrder()
 	{
 		m_partOrder.Clear();
-		for (int i = 0; i < 48; i++)
+		for (int i = 0; i < (int)SortedPartType.MAX; i++)
 		{
 			SortedPartType sortedPartType = (SortedPartType)i;
 			if (sortedPartType.IsValid())
