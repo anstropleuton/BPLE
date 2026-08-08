@@ -60,6 +60,10 @@ Subscribe to our YouTube channel for great BPLE videos!
 
 [![BPLE YouTube Channel Subscription](./bple-youtube-subscribe-banner.png)](https://www.youtube.com/@BadPiggiesTBar)
 
+Check out our Reddit subreddit for creations!
+
+[![BPLE Reddit Subreddit Invitation](./bple-reddit-join-banner.png)](https://www.reddit.com/r/bpmle)
+
 ## Tutorials
 
 New video tutorials coming soon...
