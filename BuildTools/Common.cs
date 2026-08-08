@@ -191,7 +191,7 @@ internal static class Common
 		if (!File.Exists(orgGgmPath)) File.Copy(ggmPath, orgGgmPath);
 
 		var manager = new AssetsManager();
-		manager.LoadClassPackage(Path.Combine(ToolsPath, "lz4.tpk"));
+		manager.LoadClassPackage(Path.Combine(ToolsPath, "uncompressed.tpk"));
 
 		var assetInfo = manager.LoadAssetsFile(orgGgmPath);
 		var assetFile = assetInfo.file;
