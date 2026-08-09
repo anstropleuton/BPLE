@@ -34,7 +34,9 @@ This repository has been deviated slightly, it also contains several bug fixes a
 
 ### WARNING!!!
 
-The builds of BPLE are ONLY officially released through the Discord. If you find BPLE outside of the Discord server (e.g., Itch.io), BEWARE! It might contain virus, malware, spyware, infostealer, adware or other bad stuff.
+The builds of BPLE are ONLY officially released through Discord (and maybe, in the future, through Reddit). If you find BPLE outside of the Discord server (e.g., Itch.io), BEWARE! It might contain virus, malware, spyware, infostealer, adware or other bad stuff.
+
+It's best that you check for viruses before installing, including this one (just so you get a habit of it)!
 
 Restrictions for distributing outside of our Discord server has been lifted, however, Discord server remains the ONLY trustred source for official and verified releases.
 
