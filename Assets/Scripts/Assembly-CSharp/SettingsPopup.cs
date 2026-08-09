@@ -30,11 +30,11 @@ public class SettingsPopup : TextDialog
 	{
 		if (m_supportId != null)
 		{
-			m_supportId.text = "INNOVATION PRODUCED BY 原野与森林";
+			m_supportId.text = "INNOVATION PRODUCED BY 原野与森林\nPRESERVATION CONDUCTED BY ANSTRO PLEUTON";
 			m_supportId.font = INUnity.ArialFont;
 			m_supportId.fontSize = 64;
 			m_supportId.fontStyle = FontStyle.Bold;
-			m_supportId.anchor = TextAnchor.MiddleCenter;
+			m_supportId.anchor = TextAnchor.UpperCenter;
 			m_supportId.GetComponent<MeshRenderer>().material = m_supportId.font.material;
 		}
 		GameObject gameObject = GameObject.Find("CustomerIdLabel");
