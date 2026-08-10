@@ -27,7 +27,7 @@ internal static class Common
 			Directory.SetCurrentDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory())!);
 		}
 
-		if (Path.GetFileName(Directory.GetCurrentDirectory()) != "BPLE")
+		if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "Assets")))
 		{
 			Console.WriteLine("This script must be ran in BPLE or BPLE/BuildTools directory");
 			return false;
