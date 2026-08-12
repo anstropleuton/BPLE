@@ -189,4 +189,19 @@ public class CreditsScroller : MonoBehaviour
 	{
 		Singleton<URLManager>.Instance.OpenURL(URLManager.LinkType.Privacy);
 	}
+
+	public void LaunchDiscord()
+	{
+		Application.OpenURL("https://discord.gg/JYrbsXX");
+	}
+
+	public void LaunchReddit()
+	{
+		Application.OpenURL("https://www.reddit.com/r/bpmle");
+	}
+
+	public void LaunchYouTube()
+	{
+		Application.OpenURL("https://www.youtube.com/@BadPiggiesTBar");
+	}
 }

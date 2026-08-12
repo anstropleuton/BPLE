@@ -198,7 +198,7 @@
 		{
 			"name": "TerrainScale",
 			"scope": "Global",
-			"value": 8.0
+			"value": 64.0
 		},
 		{
 			"name": "EnclosableParts",
